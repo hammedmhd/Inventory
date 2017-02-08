@@ -1,0 +1,488 @@
+html,body{
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+	user-select:none;
+	outline:none;
+	height:auto;
+	//font-family: 'Keania One', cursive;
+	font-family: 'Tenali Ramakrishna', sans-serif;
+}
+
+body{
+	background-color:rgba(0, 204, 167, 1);
+}
+
+::-webkit-scrollbar {
+      width: 7px;
+}
+::-webkit-scrollbar-track {
+      background-color: rgba(0,0,0,0.3);
+} /* the new scrollbar will have a flat appearance with the set background color */
+ 
+::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 204, 167, 1);
+} /* this will style the thumb, ignoring the track */
+ 
+::-webkit-scrollbar-button {
+      background-color: rgba(255,255,255,0.8);
+} /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
+::-webkit-scrollbar-corner {
+      background-color: rgba(255,255,255,0.8);
+}/* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
+
+.section{
+	width:20%;
+	margin:auto;
+	position:relative;
+	padding:0;
+	white-space:nowrap;
+}
+
+.back{
+	width:100%;
+	height:100%;
+	position:fixed;
+}
+
+.delete{
+	float:left;
+	color:skyblue;
+	//transform: translate(20px,-12px);
+	font-size:15px;
+	cursor:pointer;
+}
+
+.stock{
+	transform:translate(0,20px);
+	width:100%;
+	font-size:17px;
+	table-layout:fixed;
+	text-align:center;
+}
+
+.stock th{
+	height:40px;
+	font-size:21px;
+	background-color:rgba(0, 204, 167, 1);
+	box-shadow:0px 0px 20px rgba(255,255,255,0.8);;
+	text-shadow:1px 1px 20px rgba(255,255,255,0.4);
+	color:rgba(255,255,255,0.8);
+	white-space:nowrap;
+	cursor:pointer;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.stock tr{
+	background-color:rgba(0,0,0,0.4);
+}
+
+.stock tr:nth-child(odd){
+	background-color:rgba(0,0,0,0.3);
+}
+
+.stock tr:hover {
+	background-color:rgba(0, 204, 167, 1);
+}
+
+.stock td{
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	height:50px;
+	font-size:20px;
+	text-shadow:1px 1px 30px rgba(255,255,255,0.8);
+	color:rgba(255,255,255,0.8);
+}
+
+#header{
+	margin:0;
+	padding:0;
+	color:rgba(255,255,255,0.8);
+	text-shadow: 1px 1px 20px rgba(255,255,255,0.8);
+	display:block;
+	font-size:30px;
+	line-height:60px;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+.navbar{
+	table-layout:fixed;
+	//border:3px solid white;
+	position:fixed;
+	top:0;
+	background: rgba(0, 204, 167, 1);
+	width:100%;
+	height:auto;
+	z-index:1;
+}
+.navbar td{
+	//border:3px solid white;
+}
+
+.fa.fa-home{
+	position:relative;
+	transform:translate(10px,0);
+	font-size:25px;
+	color:rgba(255,255,255,0.8);
+	text-shadow: 1px 1px 20px rgba(255,255,255,0.8);
+}
+
+.fa.fa-home:active{
+	transform:translate(10px,3px);
+}
+
+.list{
+	display:none;
+	margin:0;
+	position:fixed;
+	padding:0;
+	list-style:none;
+	top:0;
+	right:0;
+	float:right;
+	overflow:hidden;
+	background:rgba(0, 204, 167, 1);
+	height:100%;
+	padding:79px 0 0 0;
+	//border:2px dotted red;
+}
+
+.list li a{
+	//border:1px solid #016daf;
+	text-shadow: 1px 1px 20px rgba(255,255,255,0.8);
+	color:rgba(255,255,255,0.8);
+	display:block;
+	font-size:20px;
+	padding:20px 31px;
+	text-align:left;
+	text-decoration:none;
+	overflow:hidden;
+	white-space:nowrap;
+}
+
+.list span{
+	text-shadow: 1px 1px 20px rgba(255,255,255,0.8);
+	color:rgba(255,255,255,0.8);
+	display:block;
+	font-size:20px;
+	padding:20px 31px;
+	text-align:left;
+	text-decoration:none;
+	overflow:hidden;
+	white-space:nowrap;
+	cursor:pointer;
+}
+
+.list li a:hover{
+	background-color:rgba(255,255,255,0.3);
+}
+
+.list li span:hover{
+	background-color:rgba(255,255,255,0.3);
+}
+
+#signs{
+		margin:auto;
+}
+
+#signs td{
+	text-align:center;
+}
+
+#remove{
+float:left;
+font-size:20px;
+transform:translate(1px,0);
+}
+
+#remove:active{
+	transform:translate(1px,3px);
+}
+
+.progress{
+	z-index:1;
+	//border:2px solid rgba(255,255,255,0.8);
+	//box-shadow:0px 0px 20px rgba(255,255,255,0.8);;
+	//text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+	//border-radius:10px;
+	//color:rgba(255,255,255,0.8);
+	//font-weight:bold;
+	//background-color:rgba(0, 204, 167, 1);
+	//padding:30px 50px;
+	font-size:21px;
+	white-space:nowrap;
+	//position:fixed;
+}
+
+
+#close{
+	float:right;
+	color:white;
+	transform:translate(-10px,0);
+	font-size:40px;
+	cursor:pointer;
+	outline:none;
+}
+#close:active{
+	transform:translate(-10px,3px);
+}
+
+#close2{
+	float:right;
+	color:white;
+	transform:translate(-10px,0);
+	font-size:40px;
+	cursor:pointer;
+	outline:none;
+}
+#close2:active{
+	transform:translate(-10px,3px);
+}
+
+#addStock{
+	float:left;
+	transform:translate(1px,0);
+	color:rgba(255,255,255,0.8);
+	text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+	cursor:pointer;
+	font-size:20px;
+}
+
+#addStock:active{
+	transform:translate(0,2px);
+}
+
+#changes{
+	 cursor:pointer; 
+	 font-size:20px; 
+	 color:rgba(255,255,255,0.8); 
+	 text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+}
+
+
+input[type='text']{
+	text-align:center;
+	text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+	color:rgba(255,255,255,0.8);
+	border:none;
+	font-family: 'Tenali Ramakrishna', sans-serif;
+	font-size:20px;
+	width:90%;
+	white-space:nowrap;
+	overflow:hidden;
+	outline-color:rgba(0, 204, 167, 1);
+	text-overflow:ellipsis;
+}
+
+input[type='submit']{
+	font-family: 'Tenali Ramakrishna', sans-serif;
+	background-color:rgba(0, 204, 167, 1);
+	box-shadow:1px 1px 10px rgba(255,255,255,0.8);
+	text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+	border:1px solid skyblue;
+	border-radius:10px;
+	width:80%;
+	font-size:20px;
+	outline:none;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	color:rgba(255,255,255,0.8);
+	cursor:pointer;
+}
+
+.search{
+		//border:1px solid white;
+		table-layout:fixed;
+		width:100%;
+}
+
+.search th{
+		//border:1px solid white;
+}
+
+#refreshp:active{
+	transform:translate(0,4px);
+}
+
+#addS{
+	display:none;
+	margin:auto;
+	z-index:1;
+	background-color:rgba(0, 204, 167, 1);
+	width:100%;
+	height:90%;
+	border-radius:20px;
+	//margin:70px 0 0 0;
+	position:fixed;
+}
+
+#addS2{
+	display:none;
+	margin:auto;
+	z-index:1;
+	background-color:rgba(0, 204, 167, 1);
+	width:100%;
+	height:90%;
+	border-radius:20px;
+	//margin:70px 0 0 0;
+	position:fixed;
+	//border:1px solid white;
+}
+
+.me{
+	max-width:300px;
+}
+
+#titl{
+	color:rgba(255,255,255,0.8);
+	text-align:center;
+	font-size:25px;
+}
+#table2{
+	//border:2px solid black;
+	width:100%;
+	font-size:20px;
+	table-layout:fixed;
+	color:rgba(255,255,255,0.8);
+	margin:auto;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+
+#table2 td{
+	//border:3px solid red;
+	padding:10px;
+	background-color:rgba(0,0,0,0);
+}
+
+#table2 input[type='text']{
+	background-color:rgba(0, 204, 167, 1);
+	outline:white;
+	box-shadow:0px 0px 20px rgba(255,255,255,0.8);;
+}
+
+#message{
+	//border:1px solid white;
+	display:none;
+	z-index:1;
+	color:rgba(255,255,255,0.8);
+	font-size:30px;
+	text-align:center;
+	text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+}
+
+#menu{
+	float:right;
+	position:relative;
+	right:20px;
+	font-size:25px;
+	cursor:pointer;
+	color:rgba(255,255,255,0.8);
+	text-shadow: 1px 1px 20px rgba(255,255,255,0.8);
+}
+
+#menu:active{
+	transform: translate(0,2px);
+}
+
+#searchme{
+	width:100px;
+	font-size: 21px;
+	text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+}
+
+#searchme:hover{
+	cursor:pointer;
+}
+
+#searchme:active{
+	transform: translate(0,4px);
+}
+
+.container{
+	padding:10px;
+}
+
+.button{
+	cursor:pointer;
+	width:200px;
+	font-size:23px;
+	text-align:center;
+	color:rgba(255,255,255,0.8);
+	line-height:100px;
+	border-radius:10px;
+	background-color:rgba(0, 204, 167, 1);
+	margin:50px auto;
+	text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+	box-shadow:0px 0px 20px rgba(255,255,255,0.8);;
+	transition: all in 0.5s;
+}
+
+.button:active{
+	transform: translate(0,7px);
+}
+
+#csvupload{
+	display:none;
+}
+
+#csvupload2{
+	display:none;
+}
+
+select{
+	font-size:20px;
+	cursor:pointer;
+	color:rgba(255,255,255,0.8);
+	outline-color:rgba(255,255,255,0.8);
+	background-color:rgba(0, 204, 167, 1);
+	text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+	box-shadow:0px 0px 20px rgba(255,255,255,0.8);;
+	font-family: 'Tenali Ramakrishna', sans-serif;
+}
+
+#searchhide{
+	cursor:pointer;
+	font-size:20px;
+	color:rgba(255,255,255,0.8);
+	text-shadow:0px 0px 20px rgba(255,255,255,0.8);
+}
+
+input[type='checkbox']{
+	display:none;
+}
+
+input[type='checkbox'] + label{
+	cursor:pointer;
+	border-radius:50%;
+	display:inline-block;
+	width:12px;
+	height:12px;
+	//background-color:red;
+}
+
+input[type='checkbox']:checked + label{
+	background-color:limegreen;
+	cursor:pointer;
+}
+
+input[type='checkbox'] + .checkbox{
+	float:left;
+	cursor:pointer;
+	border-radius:50%;
+	display:inline-block;
+	width:10px;
+	height:10px;
+	background-color:rgba(255,255,255,0.8);
+}
+
+input[type='checkbox']:checked + .checkbox{
+	background-color:red;
+	cursor:pointer;
+}
