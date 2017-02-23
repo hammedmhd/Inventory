@@ -2,7 +2,7 @@
 include ('functions.php');
 session_name('Store');
 session_start();
-$appname = 'Inventory System v2.0';
+$appname = 'Inventory System';
 
 if(isset($_POST['user'])){
 	$user = sanitizeString($_POST['user']);
@@ -41,7 +41,7 @@ echo "<!DOCTYPE html>
 			<link rel='stylesheet' href='css/bootstrap.css'>
 			<link rel='stylesheet' href='css/style.css?7.3'>
 			<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-			<link rel='shortcut icon' href='img/dd.ico' type='image/x-icon'>
+			<link rel='shortcut icon' href='img/ddd.ico' type='image/x-icon'>
 	</head>
 	<body style='padding-top:60px'>
 	<script src='js/jquery-3.1.1.js'></script>
@@ -80,7 +80,7 @@ echo "<!DOCTYPE html>
 			<link rel='stylesheet' href='css/bootstrap.css'>
 			<link rel='stylesheet' href='css/style.css?7.3'>
 			<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-			<link rel='shortcut icon' href='img/dd.ico' type='image/x-icon'>
+			<link rel='shortcut icon' href='img/ddd.ico' type='image/x-icon'>
 	</head>
 	<body>
 	<script src='js/jquery-3.1.1.js'></script>
@@ -92,7 +92,7 @@ echo "<!DOCTYPE html>
 				<span class='icon-bar'></span>
 				<span class='icon-bar'></span>
 				</button>
-				<p class='navbar-brand'>Store</p>
+				<p class='navbar-brand'>Inventory System</p>
 			</div>
 			<div class='collapse navbar-collapse' id='dropmenu'>
 				<ul class='nav navbar-nav navbar-right'>
@@ -100,7 +100,7 @@ echo "<!DOCTYPE html>
 				</ul>
 			</div>
 		</nav>
-		<img id='backgroundpic' src='img/Background-black.jpg'>
+		<img id='backgroundpic' src='img/b.jpg'>
 		<div class='container header'>
 		<section class='col-xs-6 col-xs-offset-3 login'>
 			<form autocomplete='off' id='logmein' method='post' action='index.php' class='text-center col-xs-12' style='margin-top:40px'>
