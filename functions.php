@@ -29,29 +29,38 @@ if($rows == 0){
 	$result = queryMysql("SHOW TABLES LIKE 'orders'");
 	if($result->num_rows == 0){
 		createTable('orders', '
-		orderID bigint(20) NOT NULL,
-		customer varchar(200) DEFAULT NULL,
-		product varchar(255) DEFAULT NULL,
-		quantity bigint(20) NOT NULL,
-		serialCode varchar(100) DEFAULT NULL,
-		shippingStatus int(1) NOT NULL,
-		remarks varchar(255) DEFAULT NULL,
-		stamp varchar(100) DEFAULT NULL,
-		PRIMARY KEY (orderID)'
+		reportID BIGINT NOT NULL,
+		platform VARCHAR(100),
+		name VARCHAR(250) NOT NULL,
+		address VARCHAR(250) NOT NULL,
+		contactNum VARCHAR(50) NOT NULL,
+		quantity BIGINT NOT NULL,
+		productCode VARCHAR(200) NOT NULL,
+		date VARCHAR(100) NOT NULL,
+		trackingNum VARCHAR(100) NOT NULL,
+		shippingStatus INT(1) NOT NULL,
+		remarks VARCHAR(200),
+		bank VARCHAR(100),
+		totalPrice VARCHAR(100) NOT NULL,
+		UNIQUE KEY (reportID)'
 		);
 			
 		createTable('stock', '
-	    stockID bigint(20) NOT NULL,
-	    serialCode varchar(100) NOT NULL,
-	    name varchar(255) DEFAULT NULL,
+		stockID BIGINT NOT NULL,
+	    productCode varchar(200) NOT NULL,
 	    quantity bigint(20) DEFAULT NULL,
-	    price double NOT NULL,
-	    remarks varchar(255) DEFAULT NULL,
-	    stamp varchar(100) DEFAULT NULL,
-	    PRIMARY KEY (stockID),
-		UNIQUE KEY (stockID),
-	    UNIQUE KEY (serialCode)'
+	    price VARCHAR(50),
+	    stamp VARCHAR(50) NOT NULL,
+	    UNIQUE KEY (productCode),
+	    UNIQUE KEY (stockID)'
 		);
+
+		createTable('members', '
+		Username varchar(50) NOT NULL UNIQUE KEY,
+		Password varchar(10) NOT NULL'
+		);
+
+		$result = queryMysql("INSERT INTO members VALUES('admin','admin')");
 }
 }else {
 	$result = queryMysql("USE InventorySystem");
