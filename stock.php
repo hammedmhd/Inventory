@@ -314,14 +314,14 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 		echo "<tr><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateStock()'></td></tbody></table></form><button style='font-size:25px; color:black' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
 	}
 }else{//USER VIEW
- echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h4>" . ucfirst($_SESSION['user']) . "'s area</h4></div>
+ echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s area</h5></div>
  		<div style='margin-bottom:20px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
 	 		<div class='w3-card-4 col-xs-2 col-xs-offset-2'>
 			<header class='w3-container'>
 			<span id='EditOrder' class='fa fa-user fa-3x' onclick='loadPage(&#39;home.php&#39;)'></span>
 			</header>
 			<footer class='w3-container'>
-				<h5 style='color:darkgrey'>" . ucfirst($_SESSION['user']) . "'s area</h5>
+				<h6 style='color:darkgrey'>" . ucfirst($_SESSION['user']) . "'s area</h6>
 			</footer>
 		</div>
 		<div class='w3-card-4 col-xs-2'>
@@ -329,7 +329,7 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 				<span id='stockPanel' class='fa fa-database fa-3x' onclick='loadPage(&#39;stock.php&#39;)' style='transform:translate(5px,0)'><i style='font-size:20px; transform:translate(5px,-30px)' class='fa fa-trash' title='Stock Reset' onclick='resetStock()'></i>
 			</header>
 			<footer class='w3-container'>
-				<h5 style='color:darkgrey'>Stock Items</h5>
+				<h6 style='color:darkgrey'>Stock Items</h6>
 			</footer>
 		</div>
 		<div class='w3-card-4 col-xs-2'>
@@ -337,7 +337,7 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 			<span id='EditOrder' class='fa fa-exchange fa-3x' onclick='loadPage(&#39;orders.php&#39;)'></span>
 			</header>
 			<footer class='w3-container'>
-				<h5 style='color:darkgrey'>Orders</h5>
+				<h6 style='color:darkgrey'>Orders</h6>
 			</footer>
 		</div>
 		<div class='w3-card-4 col-xs-2'>
@@ -345,7 +345,7 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 				<span class='fa fa-print fa-3x' onclick='location.assign(&#39;print.php&#39;)'></span>
 				</header>
 				<footer class='w3-container'>
-					<h5 style='color:darkgrey'>Print</h5>
+					<h6 style='color:darkgrey'>Print</h6>
 				</footer>
 	 		</div>
 	  </div>

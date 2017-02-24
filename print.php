@@ -5,8 +5,11 @@ session_start();
 
 if(isset($_POST['slist'])){
 	$table = $_POST['from'];
+	$service = $_POST['service'];
+
+	echo "<p class='text-center'><a class='btn btn-primary' href='index.php' style='width:30%'>Back</a>&nbsp;<a style='width:30%' class='btn btn-primary' href='javascript:window.print()'>Print</a></p>";
 	if($table == 'stock'){
-		echo  "<p class='text-center'><a class='btn btn-primary' href='index.php' style='width:30%'>Back</a>&nbsp;<a style='width:30%' class='btn btn-primary' href='javascript:window.print()'>Print</a></p>
+		echo  "
 		<table class='table table-striped'>
 		<thead><tr style='font-weight:bold'>
 		<th class='text-center'>Stock ID</th>
@@ -25,72 +28,112 @@ if(isset($_POST['slist'])){
 		}
 		echo "</tbody></table>";
 	}else if($table == 'orders'){
-		echo "<p class='text-center'><a class='btn btn-primary' href='index.php' style='width:30%'>Back</a>&nbsp;<a style='width:30%' class='btn btn-primary' href='javascript:window.print()'>Print</a></p>";
-		foreach($_POST['slist'] as $p){
-		$result = queryMysql("SELECT * FROM orders WHERE reportID='$p'");
-		$row = $result->fetch_array(MYSQLI_ASSOC);
-		if($result->num_rows !== 0){
-		echo "<table border='0' style='width:100%; height:6.5cm;'>
-					<tr>
-						<td></td>
-					</tr>
-				</table>
-
-				<table align='left' border='0' style='width:10.8cm; height:2.5cm; margin-left: 2.5cm; table-layout: fixed;'>
-					<tr>
-						<td align='left' style='height:15%; vertical-align:top; font-size:11px;'>".strtoupper($row['name'])."</td>
-					</tr>
-					<tr>
-						<td align='left' style='height:40%; vertical-align:top; font-size:12px;'>".strtoupper($row['address'])."</td>
-					</tr>
-				</table>
-
-				<table align='left' border='0' style='width:15cm; height:0.5cm; margin-left: 5.6cm;'>
-					<tr>
-						<td align='left' style='font-size:18px; vertical-align:bottom;'>".$row['contactNum']."</td>
-					</tr>
-				</table>
-
-				<table align='left' border='0' style='width:7cm; height:1.7cm; margin-left: 16.5cm; table-layout: fixed;'>
-					<tr>
-						<td align='left' style='vertical-align:top; font-size:11px; word-wrap: break-word;'>".$row['quantity'].'*'.$row['productCode']."</td>
-					</tr>
-				</table>
-			";
-			}
-			}
-		/*echo "<table class='table table-striped'>
-		<thead><tr style='font-weight:bold'>
-		<th class='text-center'>ReportID</th>
-		<th class='text-center'>Import Date</th>			
-		<th class='text-center'>Name</th>
-		<th class='text-center'>Address</th>
-		<th class='text-center'>Phone</th>
-		<th class='text-center'>Sales Date</th>
-		<th class='text-center'>Item</th>
-		<th class='text-center'>Source</th>
-		<th class='text-center'>Payment</th>
-		</tr></thead>
-		<tbody>";
-		foreach($_POST['slist'] as $p){
+		foreach($_POST['slist'] as $id => $p){
 			$result = queryMysql("SELECT * FROM orders WHERE reportID='$p'");
-			if($result->num_rows !== 0){
 			$row = $result->fetch_array(MYSQLI_ASSOC);
-			echo "<tr>
-				<td class='text-center'>" . $row['reportID'] . "</td>
-				<td class='text-center'>" . $row['date'] ."</td>
-				<td class='text-center'>" .  strtoupper($row['name']) . "</td>
-				<td class='text-center'>" . strtoupper($row['address']) . "</td>
-				<td class='text-center'>" . $row['contactNum'] . "</td>
-				<td class='text-center'>" . $row['date'] . "</td>
-				<td class='text-center'>" . strtoupper($row['productCode']) . "</td>
-				<td class='text-center'>" . strtoupper($row['bank']) . "</td>
-				<td class='text-center'>" . $row['totalPrice'] . "</td>
-				</tr>";
-			}
+
+			$poslaju[$id] =  "<table border='0' style='width:100%; height:6.5cm;'>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width:10.8cm; height:2.5cm; margin-left: 2.5cm; table-layout: fixed;'>
+						<tr>
+							<td align='left' style='height:15%; vertical-align:top; font-size:11px;'>" . strtoupper($row['name']) . "</td>
+						</tr>
+						<tr>
+							<td align='left' style='height:40%; vertical-align:top; font-size:12px;'>".strtoupper($row['address']) . "</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width:15cm; height:0.5cm; margin-left: 5.6cm;'>
+						<tr>
+							<td align='left' style='font-size:18px; vertical-align:bottom;'>" . $row['contactNum'] . "</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width:7cm; height:1.7cm; margin-left: 16.5cm; table-layout: fixed;'>
+						<tr>
+							<td align='left' style='vertical-align:top; font-size:11.4px; word-wrap: break-word;'>" . $row['quantity'] . '*' . strtoupper($row['productCode']) . "</td>
+						</tr>
+					</table>
+				";
+				$skynet[$id] =  "
+					<table align='left' border='0' style='width:10.05cm; height:3.8cm;'>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 5cm; height: 2.2cm; float: left; margin-left: 6.3cm;'>
+						<tr>
+							<td align='left' style='font-size:11.4px; vertical-align:top;'>".$row['quantity'].'*'.strtoupper($row['productCode'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 8.5cm; height: 2.2cm; margin-left: 1cm; float: left;'>
+						<tr>
+							<td align='left' style='font-size:12px; vertical-align: top;'>".strtoupper($row['address'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 4.8cm; height: 1cm; margin-left: 12cm; float: left;'>
+						<tr>
+							<td align='left' style='font-size: 11px;'>".strtoupper($row['name'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 5cm; height: 1cm; float: left;'>
+						<tr>
+							<td align='center' style='font-size: 11px;'>".$row['contactNum']."</td>
+						</tr>
+					</table>
+				";
+				$gdex[$id] = "
+				
+					<table align='left' border='0' style='width:10.05cm; height:3.5cm;'>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
+
+					<table align='right' border='0' style='width: 5cm; height: 1.6cm; float: left; margin-left: 6.2cm;'>
+						<tr>
+							<td align='right' style='font-size:11.4px; vertical-align:center;'>".$row['quantity'].'*'.strtoupper($row['productCode'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 8.5cm; height: 1.6cm; float: left; margin-left: 0.8cm;'>
+						<tr>
+							<td align='left' style='font-size:12px; vertical-align: top;'>".strtoupper($row['address'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 4.7cm; height: 1cm; margin-left: 13cm; float: left;'>
+						<tr>
+							<td align='left' style='font-size: 11px; vertical-align: top;'>".strtoupper($row['name'])."</td>
+						</tr>
+						<tr>
+							<td align='left' style='font-size: 11px; vertical-align: top;'>".$row['contactNum']."</td>
+						</tr>
+					</table>
+				";
+
 		}
-		echo "</tbody></table><p class='text-center'><a class='fa fa-print fa-2x' href='javascript:window.print()'></a><a class='fa fa-home fa-2x' href='index.php'></a></p>";
-	}*/
+		if($service == 'poslaju'){
+			foreach($poslaju as $post){
+				echo $post;
+			}
+		}else if($service == 'skynet'){
+			foreach($skynet as $sky){
+				echo $sky;
+			}
+		}else if($service == 'gdex'){
+			foreach($gdex as $gd){
+				echo $gd;
+			}
+		}else echo 'Service not selected';
 	}
 }else{
 echo "<!DOCTYPE html>

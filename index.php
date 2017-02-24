@@ -3,7 +3,23 @@ include ('functions.php');
 session_name('Store');
 session_start();
 $appname = 'Inventory System';
-
+/*<ul class='nav navbar-nav navbar-right'>
+					<li class='active'><a href='index.php' class='fa fa-user-circle fa-2x'><span style='font-size:15px'>" . ucfirst($_SESSION['user']) . "</span></a></li>
+					<li><a href='stock.php' class='linkme fa fa-database fa-2x'>&nbsp;<span class='badge blue'>$stock</span></a></li>
+					<li><a href='orders.php' class='linkme fa fa-exchange fa-2x'>&nbsp;<span class='badge green'>$complete</span>&nbsp;<span class='badge gold'>$shipping</span>&nbsp;<span class='badge red'>$orders</span></a></li>
+					<li><a class='fa fa-sign-out fa-2x' href='index.php?logout'></a></li>
+				</ul><nav class='navbar navbar-default navbar-fixed-top'>
+			<div class='navbar-header'>
+				<button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#dropmenu' aria-expanded='false'>
+				<span class='icon-bar'></span>
+				<span class='icon-bar'></span>
+				<span class='icon-bar'></span>
+				</button>
+				<p class='navbar-brand'><span id='header'>Inventory System</p>
+			</div>
+			<div class='collapse navbar-collapse' id='dropmenu'>
+			</div>
+		</nav>*/
 if(isset($_POST['user'])){
 	$user = sanitizeString($_POST['user']);
 	$pass = sanitizeString($_POST['pass']);
@@ -38,15 +54,23 @@ echo "<!DOCTYPE html>
 			<meta charset='utf-8'>
 			<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 			<meta name='viewport' content='width=device-width, inital-scale=1.0'>
-			<link rel='stylesheet' href='css/bootstrap.css'>
-			<link rel='stylesheet' href='css/style.css?7.3'>
+			<link rel='stylesheet' href='css/bootstrap.css?0.3'>
+			<link rel='stylesheet' href='css/style.css?7.7'>
 			<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 			<link rel='shortcut icon' href='img/ddd.ico' type='image/x-icon'>
+			<style type='text/css' media='print'>
+			html,body{
+				font-famiily: 'Times New Roman';
+			}
+			@page {
+			size: 21cm 10.15cm;
+			}
+			</style>
 	</head>
 	<body style='padding-top:60px'>
 	<script src='js/jquery-3.1.1.js'></script>
 	<script src='js/bootstrap.js'></script>
-		<nav class='navbar navbar-default navbar-fixed-top special'>
+		<nav class='navbar navbar-default navbar-fixed-top'>
 			<div class='navbar-header'>
 				<button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#dropmenu' aria-expanded='false'>
 				<span class='icon-bar'></span>
@@ -65,10 +89,10 @@ echo "<!DOCTYPE html>
 			</div>
 		</nav>
 		<img id='backgroundpic' src='img/b.jpg'>
-		<p style='width:100%; display:none; position:fixed; z-index:1' class='text-center alert alert-danger' id='lstatus'></p>
+		<p style='width:100%; display:none; position:fixed; z-index:1' class='text-center alert alert-info see' id='lstatus'></p>
 		 <div id='userView'>
 	 	 </div>
-		<script src='js/style.js?7.2'></script></body></html>";
+		<script src='js/style.js?7.6'></script></body></html>";
 }else{
 echo "<!DOCTYPE html>
 <html>
@@ -78,7 +102,7 @@ echo "<!DOCTYPE html>
 			<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 			<meta name='viewport' content='width=device-width, inital-scale=1.0'>
 			<link rel='stylesheet' href='css/bootstrap.css'>
-			<link rel='stylesheet' href='css/style.css?7.3'>
+			<link rel='stylesheet' href='css/style.css?7.7'>
 			<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 			<link rel='shortcut icon' href='img/ddd.ico' type='image/x-icon'>
 	</head>
@@ -110,7 +134,7 @@ echo "<!DOCTYPE html>
 			</form>
 		</section>
 		</div>
-		<script src='js/style.js?4.'></script></body></html>";
+		<script src='js/style.js?7.6'></script></body></html>";
 }
 
 

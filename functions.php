@@ -32,7 +32,7 @@ if($rows == 0){
 		reportID BIGINT NOT NULL,
 		platform VARCHAR(100),
 		name VARCHAR(250) NOT NULL,
-		address VARCHAR(250) NOT NULL,
+		address TEXT NOT NULL,
 		contactNum VARCHAR(50) NOT NULL,
 		quantity BIGINT NOT NULL,
 		productCode VARCHAR(200) NOT NULL,

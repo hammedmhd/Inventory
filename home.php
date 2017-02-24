@@ -35,14 +35,14 @@ if(isset($_POST['usern'])){ //updating account username and pass
 		echo "Error while creating" . ucfirst($user) . "'s account.";
 	}
 }else{// main BOARD view
- echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h4>" . ucfirst($_SESSION['user']) . "'s area</h4></div>
+ echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s area</h5></div>
  		<div style='margin-bottom:20px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
 	 		<div class='w3-card-4 col-xs-2 col-xs-offset-2'>
 	 			<header class='w3-container'>
 				  <span id='editUserNav' class='fa fa-users fa-3x' title='Edit User Panel' onclick='viewUserEdit()'></span>
 				</header>
 				<footer class='w3-container'>
-					<h5 style='color:darkgrey'>Users</h5>
+					<h6 style='color:darkgrey'>Users</h6>
 				</footer>
 			</div>
 			<div class='w3-card-4 col-xs-2'>
@@ -50,7 +50,7 @@ if(isset($_POST['usern'])){ //updating account username and pass
 					<span id='stockPanel' class='fa fa-database fa-3x' onclick='loadPage(&#39;stock.php&#39;)'>
 				</header>
 				<footer class='w3-container'>
-					<h5 style='color:darkgrey'>Stock Items</h5>
+					<h6 style='color:darkgrey'>Stock Items</h6>
 				</footer>
 			</div>
 			<div class='w3-card-4 col-xs-2'>
@@ -58,7 +58,7 @@ if(isset($_POST['usern'])){ //updating account username and pass
 				<span id='EditOrder' class='fa fa-exchange fa-3x' onclick='loadPage(&#39;orders.php&#39;)'></span>
 				</header>
 				<footer class='w3-container'>
-					<h5 style='color:darkgrey'>Orders</h5>
+					<h6 style='color:darkgrey'>Orders</h6>
 				</footer>
 			</div>
 			<div class='w3-card-4 col-xs-2'>
@@ -66,7 +66,7 @@ if(isset($_POST['usern'])){ //updating account username and pass
 				<span class='fa fa-print fa-3x' onclick='location.assign(&#39;print.php&#39;)'></span>
 				</header>
 				<footer class='w3-container'>
-					<h5 style='color:darkgrey'>Print</h5>
+					<h6 style='color:darkgrey'>Print</h6>
 				</footer>
 	 		</div>
 	  </div>

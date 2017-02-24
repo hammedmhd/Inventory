@@ -64,23 +64,23 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<td><input type='text' name='editAddress[]' id='editAddress' value='" . $row['address'] . "'></td>
 				<td><input type='text' name='editContactNum[]' id='editcontactNum' value='" . $row['contactNum'] . "'</td>
 				<td><input type='text' name='editProductCode[]' id='editproductcode' value='" . $row['productCode'] . "'</td>
-				<td><input type='text' name='editQuantity[]' id='editquantityum' value='" . $row['quantity'] . "'</td>
+				<td><input type='text' name='editQuantity[]' id='editquantity' value='" . $row['quantity'] . "'</td>
 				<td><input type='text' name='editTrackingnum[]' id='edittrackingnum' value='" . $row['trackingNum'] . "'</td>
 				<td><i id='".$row['reportID']."' class='fa fa-circle statusChange' status='" . $row['shippingStatus'] . "' style='" . $row['shippingStatus'] . "; display:inline'></i>$select</td>
 				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
 				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
-				<td>" . $row['totalPrice'] . "</td>
+				<td>$ " . $row['totalPrice'] . "</td>
 				<td>" . $row['date'] . "</td>
 				</tr>";
 		}
-		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
+		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
 	}
 }else if(isset($_POST['asc'])){
 	$asc = $_POST['asc'];
 	$field = $_SESSION['field'];
 	$search = $_SESSION['search'];
 
- $result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY $asc ASC");
+ 	$result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY $asc ASC");
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
 		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
@@ -137,11 +137,11 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<td><i id='".$row['reportID']."' class='fa fa-circle statusChange' status='" . $row['shippingStatus'] . "' style='" . $row['shippingStatus'] . "; display:inline'></i>$select</td>
 				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
 				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
-				<td>" . $row['totalPrice'] . "</td>
+				<td>$ " . $row['totalPrice'] . "</td>
 				<td>" . $row['date'] . "</td>
 				</tr>";
 		}
-		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
+		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
 	}
 }else if(isset($_POST['desc'])){
 	$desc = $_POST['desc'];
@@ -205,21 +205,11 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<td><i id='".$row['reportID']."' class='fa fa-circle statusChange' status='" . $row['shippingStatus'] . "' style='" . $row['shippingStatus'] . "; display:inline'></i>$select</td>
 				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
 				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
-				<td>" . $row['totalPrice'] . "</td>
+				<td>$ " . $row['totalPrice'] . "</td>
 				<td>" . $row['date'] . "</td>
 				</tr>";
 		}
-		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
-	}
-}else if(isset($_POST['updateStatus'])){
-	$status = $_POST['updateStatus'];
-	$id = $_POST['idu'];
-	if($status == 0){
-		$result = queryMysql("UPDATE orders SET shippingStatus='$status' WHERE reportID='$id'");
-	}else if($status == 1){
-		$result = queryMysql("UPDATE orders SET shippingStatus='$status' WHERE reportID='$id'");
-	}else if($status == 2){
-		$result = queryMysql("UPDATE orders SET shippingStatus='$status' WHERE reportID='$id'");
+		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
 	}
 }else if(isset($_POST['reportID'])){
 	$i = 0;
@@ -310,16 +300,18 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		$remarks = $data[8];
 		$bank = $data[9];
 		$stamp = date('Y-m-d');
-		$totalPrice = 0;
-
+		$result = queryMysql("SELECT * FROM stock WHERE productCode='$productCode'");
+		$row = $result->fetch_assoc();	
+		$totalPrice =  $quantity * floatval($row['price']);
 		//$cookieName = $product;
 		//$cookieValue = $quantity;
 		//setcookie($cookieName, $cookieValue, time() + (86400 * 365), '/');
-	$result = queryMysql("SELECT * FROM orders WHERE reportID='$reportID'");
-		if($result->num_rows == 0){
+		$result = queryMysql("SELECT * FROM stock WHERE productCode='$productCode'");
+		if($result->num_rows !== 0){
 		$result = queryMysql("INSERT INTO orders VALUES($reportID,'$platform','$cusName','$address','$contactNum','$quantity','$productCode','$stamp','$trackingNumber','$shippingStatus','$remarks','$bank','$totalPrice')");
 		}
-	}	echo "Orders updating accordingly and refreshing page, please wait...";
+	}
+	echo "Orders updating accordingly and refreshing page, please wait...";
 }else if(isset($_POST['trackingNumber'])){// regestering new manual order entry;
 	$stamp = date('Y-m-d');
 	$result = queryMysql("SELECT * FROM orders");
@@ -335,7 +327,9 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	$shippingstatus = $_POST['shippingStatus'];
 	$bank = $_POST['bank'];
 	$remarks = $_POST['remarks'];
-	$totalPrice = 0;
+	$result = queryMysql("SELECT * FROM stock WHERE productCode='$productCode'");
+	$row = $result->fetch_assoc();	
+	$totalPrice =  $quantity * floatval($row['price']);
 
 	$result = queryMysql("SELECT * FROM stock WHERE productCode='$productCode'");
 	if($result->num_rows !== 0){
@@ -375,18 +369,18 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		<thead>
 		<tr style='border-bottom:3px solid lightgrey'>
 			<th class='text-center'><input type='checkbox' table='orders' id='selectAll' onchange='selectall(this)'></th>
-			<th class='text-center'>ReportID</th>
-			<th class='text-center'>Name</th>
-			<th class='text-center'>Address</th>
-			<th class='text-center'>Contact details</th>
-			<th class='text-center'>Item</th>
-			<th class='text-center'>Quantity</th>
-			<th class='text-center'>Tracking Number</th>
-			<th class='text-center'>Shipping Status<br><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:gold' onclick='jobDone1(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone2(this)'></i></th>
-			<th class='text-center'>Bank</th>
-			<th class='text-center'>Remarks</th>
-			<th class='text-center'>Total Price</th>
-			<th class='text-center'>Date</th>
+			<th class='text-center'>ReportID<span id='reportID' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='reportID' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Name<span id='name' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='name' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Address<span id='address' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='address' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Phone Number<span id='contactNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='contactNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Item<span id='productCode' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='productCode' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Quantity<span id='quantity' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='quantity' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Tracking Number<span id='trackingNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='trackingNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:gold' onclick='jobDone1(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone2(this)'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Date<span id='date' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='date' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 		</tr>
 		</thead>
 		<tbody>";
@@ -423,11 +417,11 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<td><i id='".$row['reportID']."' class='fa fa-circle statusChange' status='" . $row['shippingStatus'] . "' style='" . $row['shippingStatus'] . "; display:inline'></i>$select</td>
 				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
 				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
-				<td>" . $row['totalPrice'] . "</td>
+				<td>$ " . $row['totalPrice'] . "</td>
 				<td>" . $row['date'] . "</td>
 				</tr>";
 		}
-		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
+		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
 	}
 }else if(isset($_GET['statusBadge'])){
 	$status = $_GET['statusBadge'];
@@ -435,14 +429,14 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	$value = $result->num_rows;
 	echo $value;
 }else{
- echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h4>" . ucfirst($_SESSION['user']) . "'s area</h4></div>
+ echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s area</h5></div>
  		<div style='margin-bottom:20px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
 	 		<div class='w3-card-4 col-xs-2 col-xs-offset-2'>
 			<header class='w3-container'>
 			<span id='EditOrder' class='fa fa-user fa-3x' onclick='loadPage(&#39;home.php&#39;)'></span>
 			</header>
 			<footer class='w3-container'>
-				<h5 style='color:darkgrey'>" . ucfirst($_SESSION['user']) . "'s area</h5>
+				<h6 style='color:darkgrey'>" . ucfirst($_SESSION['user']) . "'s area</h6>
 			</footer>
 		</div>
 		<div class='w3-card-4 col-xs-2'>
@@ -450,7 +444,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<span id='stockPanel' class='fa fa-database fa-3x' onclick='loadPage(&#39;stock.php&#39;)'>
 			</header>
 			<footer class='w3-container'>
-				<h5 style='color:darkgrey'>Stock Items</h5>
+				<h6 style='color:darkgrey'>Stock Items</h6>
 			</footer>
 		</div>
 		<div class='w3-card-4 col-xs-2'>
@@ -458,7 +452,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<span id='EditOrder' class='fa fa-exchange fa-3x' onclick='loadPage(&#39;orders.php&#39;)'></span><i style='font-size:20px; transform:translate(5px,-30px)' class='fa fa-trash' onclick='resetOrder()'></i>
 			</header>
 			<footer class='w3-container'>
-				<h5 style='color:darkgrey'>Orders</h5>
+				<h6 style='color:darkgrey'>Orders</h6>
 			</footer>
 		</div>
 		<div class='w3-card-4 col-xs-2'>
@@ -466,7 +460,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<span class='fa fa-print fa-3x' onclick='location.assign(&#39;print.php&#39;)'></span>
 				</header>
 				<footer class='w3-container'>
-					<h5 style='color:darkgrey'>Print</h5>
+					<h6 style='color:darkgrey'>Print</h6>
 				</footer>
 	 	</div>
 	  </div>

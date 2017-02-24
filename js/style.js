@@ -316,7 +316,7 @@ function submitNewStock(){
 					location.assign('index.php');
 					});
 				});
-			}, 4000);
+			}, 3000);
 		}
 	});
 	});
@@ -399,7 +399,7 @@ function submitNewOrder(){
 		data: $('#newOrder').serialize(),
 		success: function(response){
 			if(response.match(/(error)/g)){
-				response = 'Sorry, some fields entered are invalid, please re-enter.';
+				response = 'Sorry, failed to process request, please re-enter.';
 			}
 			$('#lstatus').fadeOut(500,function(){
 				$('#lstatus').html(response);
@@ -409,7 +409,7 @@ function submitNewOrder(){
 				$('#lstatus').fadeOut(500,function(){
 					location.assign('index.php');
 				});
-			}, 4000);
+			}, 3000);
 		}
 	});
 	});
@@ -615,7 +615,9 @@ function selectMe(e){
 }
 
 function directToPrint(){
-	location.assign('print.php');
+		var val = $('input:radio[name=service]:checked').val();
+		localStorage.service = val;
+		location.assign('print.php');
 }
 
 function emptyConsole(){
@@ -654,7 +656,9 @@ function selectall(s){
 }
 
 function getSelectedList(){
+	console.log('here');
 	var slist = localStorage.selected.split(',');
+	var service = localStorage.service;
 	if(slist){
 	var from = slist[0];
 	slist.shift();
@@ -663,7 +667,7 @@ function getSelectedList(){
 	$.ajax({
 			url: 'print.php',
 			type: 'post',
-			data: {slist: slist, from: from},
+			data: {slist: slist, from: from, service: service},
 			success: function(response){
 				$('#printableData').html(response);
 			}

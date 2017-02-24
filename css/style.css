@@ -3,7 +3,7 @@ html, body{
 	padding:0;
 	box-sizing: border-box;
 	height:100%;
-	font-family: "Arial, Helvetica, sans-serif";
+	font-family: verdana;
 	//user-select:none;
 }
 
@@ -180,16 +180,28 @@ body{
 	cursor:pointer;
 	//border:2px solid gold;
 	color:black;
+	padding:0;
+}
+
+.fa.fa-sign-out{
+	height:61px;
+}
+
+.see{
+	background-color: skyblue;/rgba(0,0,0,1);
+	border:none;
+	color:black;
 }
 
 .nav.navbar-nav.navbar-right li a{
-	padding:22px 19px 19px 19px;
+	padding:18px;
+	//padding:22px 19px 19px 19px;
 	color:black;
 }
 
 .nav.navbar-nav.navbar-right li i{
-	padding:19px;
-	color:black;
+	//padding:19px;
+	//color:black;
 }
 
 .nav.navbar-nav.navbar-right li:hover{
@@ -301,6 +313,12 @@ input[type='password']:focus{
 	}
 
 	.navbar-brand{
-		left:2%;
+		left:10%;
+	}
+}
+
+@media screen and (max-width:300px){
+	.navbar-brand{
+		left:1%;
 	}
 }
