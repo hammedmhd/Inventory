@@ -314,8 +314,8 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 		echo "<tr><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateStock()'></td></tbody></table></form><button style='font-size:25px; color:black' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
 	}
 }else{//USER VIEW
- echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s area</h5></div>
- 		<div style='margin-bottom:20px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
+ echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s Stock Items area</h5></div>
+ 		<div style='margin-bottom:10px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
 	 		<div class='w3-card-4 col-xs-2 col-xs-offset-2'>
 			<header class='w3-container'>
 			<span id='EditOrder' class='fa fa-user fa-3x' onclick='loadPage(&#39;home.php&#39;)'></span>

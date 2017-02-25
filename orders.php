@@ -429,8 +429,8 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	$value = $result->num_rows;
 	echo $value;
 }else{
- echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s area</h5></div>
- 		<div style='margin-bottom:20px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
+ echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s Orders area</h5></div>
+ 		<div style='margin-bottom:10px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
 	 		<div class='w3-card-4 col-xs-2 col-xs-offset-2'>
 			<header class='w3-container'>
 			<span id='EditOrder' class='fa fa-user fa-3x' onclick='loadPage(&#39;home.php&#39;)'></span>

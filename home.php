@@ -35,8 +35,8 @@ if(isset($_POST['usern'])){ //updating account username and pass
 		echo "Error while creating" . ucfirst($user) . "'s account.";
 	}
 }else{// main BOARD view
- echo "<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s area</h5></div>
- 		<div style='margin-bottom:20px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
+	echo " 	<div style='color:darkgrey; border-bottom:1px solid grey; min-width:300px' class='col-xs-8 col-xs-offset-2 page-header text-center display'><h5>" . ucfirst($_SESSION['user']) . "'s area</h5></div>
+			<div style='margin-bottom:10px; min-width:300px' class='text-center col-xs-8 col-xs-offset-2'>
 	 		<div class='w3-card-4 col-xs-2 col-xs-offset-2'>
 	 			<header class='w3-container'>
 				  <span id='editUserNav' class='fa fa-users fa-3x' title='Edit User Panel' onclick='viewUserEdit()'></span>
@@ -72,10 +72,10 @@ if(isset($_POST['usern'])){ //updating account username and pass
 	  </div>
 	  <div id='targetEditUser' style='min-width:450px' class='col-xs-12'>
   		<div class='alert alert-warning'>
-		<i class='fa fa-times-circle fa-2x close' onclick='hideme()'></i><br>
+		<i class='fa fa-times-circle fa-2x close' onclick='hideme()'></i>
   		<i style='float:left; font-size:30px' class='fa fa-user-plus' onclick='viewAddUser()'></i>&nbsp;
-  		<i style='float:right; font-size:30px' class='fa fa-user-times' onclick='viewDeleteUser()'></i>
-  		<h4 class='text-center page-header'>User Panel</h4>
+  		<i style='float:left; font-size:30px; transform:translate(20px,0)' class='fa fa-user-times' onclick='viewDeleteUser()'></i>
+  		<h4 class='text-center page-header' style='transform:translate(-20px,0)'>User Panel</h4>
   			<form autocomplete='off' id='updateUserInfo' class='text-center' method='post'>
   				<input autofocus='on' class='fixInput text-center' type='text' id='usern' name='usern' placeholder='Update username'><br><br>
   				<input class='fixInput text-center' type='password' id='passw' name='passw' placeholder='Update or Enter current password'><br><br>
@@ -86,7 +86,7 @@ if(isset($_POST['usern'])){ //updating account username and pass
 	  <div id='targetDeleteUser' style='min-width:450px' class='col-xs-12'>
   		<div class='alert alert-warning'>
   		<i class='fa fa-arrow-circle-left fa-2x' stle='float:left' onclick='showEditUser()'></i>
-		<i class='fa fa-times-circle fa-2x close' onclick='hideme7()'></i><br>
+		<i class='fa fa-times-circle fa-2x close' onclick='hideme7()'></i>
   		<h4 class='text-center page-header'>Delete Account: " . $_SESSION['user'] . "?</h4>
 	  		<div class='text-center'>
 		  		<button style='min-width:80px' type='button' class='btn btn-lg btn-primary fa fa-check fa-2x' onclick='deleteUser()'></button>
@@ -97,7 +97,7 @@ if(isset($_POST['usern'])){ //updating account username and pass
 	   <div id='targetAddUser' style='min-width:450px' class='col-xs-12'>
   		<div class='alert alert-warning'>
   		<i class='fa fa-arrow-circle-left fa-2x' stle='float:left' onclick='showEditUser()'></i>
-		<i class='fa fa-times-circle fa-2x close' onclick='hideme6()'></i><br>
+		<i class='fa fa-times-circle fa-2x close' onclick='hideme6()'></i>
   		<h4 class='text-center page-header'>New User</h4>
   			<form autocomplete='off' id='newUser' class='text-center' method='post'>
   				<input autofocus='on' class='text-center fixInput' type='text' id='newuser2' name='newuser' placeholder='Username'><br><br>
