@@ -1,9 +1,9 @@
 function loadPage(e){
 	$('#userView').load(e, function(){
 		if(e.match(/(stock.php)/g)){
-			$('#boardView').fadeIn(300);
+				$('#boardView').fadeIn(300);
 		}else if(e.match(/(orders.php)/g)){
-			$('#boardView2').fadeIn(300);
+				$('#boardView2').fadeIn(300);
 		}	
 	});
 	if(e.match(/(home.php)/g)){
@@ -483,12 +483,14 @@ function resetOrder(){
 				$('#lstatus').html(data);
 				$('#lstatus').fadeIn(500);
 			});
-	$('#lstatus').fadeOut(500,function(){
+		setTimeout(function(){
+			$('#lstatus').fadeOut(500,function(){
 			if(data.match(/(refreshing)/g)){
 				location.assign('index.php');
 			}
+			});
+		}, 1000);
 		});
-	});
 	}
 }
 
@@ -566,14 +568,16 @@ if(confirm('Permenantely deleting selected Stock item, are you sure?') == true){
 }
 
 
-function updateOrdersBadeg(e){
+function updateOrdersBadge(e){
 	$.get('orders.php', {statusBadge: e}, function(data){
 		$('#lstatus').fadeOut(500, function(){
 			if(e == 0){
 				$('.red').html(data);
 			}else if(e == 1){
-				$('.gold').html(data);
+				$('.yellow').html(data);
 			}else if(e == 2){
+				$('.orange').html(data);
+			}else if(e == 3){
 				$('.green').html(data);
 			}
 		});
@@ -592,7 +596,7 @@ if(confirm('Permenantely deleting selected Order entry, are you sure?') == true)
 			data: {eraseItemID: id.id},
 			success: function(response){
 			$('#lstatus').fadeOut(1000, function(){
-				updateOrdersBadeg(value);
+				updateOrdersBadge(value);
 				//location.assign('index.php');
 				$('#boardConsole').html(response);
 			});
@@ -724,6 +728,7 @@ function jobDone(){ // setting all statuseUpdate to COMPLETE
 			options[i].children[0].removeAttribute('selected');
 			options[i].children[1].removeAttribute('selected');
 			options[i].children[2].removeAttribute('selected');
+			options[i].children[3].removeAttribute('selected');
 			options[i].children[0].setAttribute('selected','selected');
 		}
 }
@@ -735,6 +740,7 @@ function jobDone1(){ // setting all statuseUpdate to COMPLETE
 			options[i].children[0].removeAttribute('selected');
 			options[i].children[1].removeAttribute('selected');
 			options[i].children[2].removeAttribute('selected');
+			options[i].children[3].removeAttribute('selected');
 			options[i].children[1].setAttribute('selected','selected');
 		}
 }
@@ -746,7 +752,20 @@ function jobDone2(){ // setting all statuseUpdate to COMPLETE
 			options[i].children[0].removeAttribute('selected');
 			options[i].children[1].removeAttribute('selected');
 			options[i].children[2].removeAttribute('selected');
+			options[i].children[3].removeAttribute('selected');
 			options[i].children[2].setAttribute('selected','selected');
+		}
+}
+
+function jobDone3(){ // setting all statuseUpdate to COMPLETE
+	var options = document.getElementsByClassName('options');
+	//var bpx = $('#allofem').prop('checked');
+		for(var i = 0; i < options.length; i++){
+			options[i].children[0].removeAttribute('selected');
+			options[i].children[1].removeAttribute('selected');
+			options[i].children[2].removeAttribute('selected');
+			options[i].children[3].removeAttribute('selected');
+			options[i].children[3].setAttribute('selected','selected');
 		}
 }
 
@@ -793,6 +812,36 @@ function ordersByDesc(id){
 	}
 	);
 }	
+
+
+function searchDatabaseColor(){
+	alert('ere');
+	$('#lstatus').html('Loading, please wait...');
+	$('#lstatus').fadeIn(500);
+	$.ajax({
+		url: 'orders.php',
+		type: 'post',
+		data: $('#searchDatabase').serialize(),
+		success: function(response){
+			$('#lstatus').fadeOut(500,function(){
+				$('#boardConsole').html(response);
+			});
+		}
+	});
+}
+
+function dome(e){
+	setTimeout(function(){
+		$('#searchOrder').val(e);
+	}, 500);
+	setTimeout(function(){
+		document.getElementById('searchbutton').click();
+	}, 700);
+
+}
+function test(e){
+	loadPage('orders.php', dome(e));
+}
 
 function hideme(){
 	$('#targetEditUser').fadeOut(300);

@@ -2,7 +2,7 @@
 include 'functions.php';
 session_name('Store');
 session_start();
-// add this to i element onclick='selectStatus(this)  // add this to select element for status change without submit onchange='updateStatus(this)
+
 if(isset($_POST['search'])){//SEARCH ORDERS
 	$date =  sanitizeString($_POST['date']);
 	$search = sanitizeString($_POST['search']);
@@ -10,8 +10,143 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	if($field == 'date'){
 		$search = $date;
 	}
+
 	$_SESSION['field'] = $field;
 	$_SESSION['search'] = $search;
+	
+	if($field == 'all'){
+		$result = queryMysql("SELECT * FROM orders WHERE platform='$search' ORDER BY reportID");
+		if($result->num_rows == 0){
+			$result = queryMysql("SELECT * FROM orders WHERE name='$search' ORDER BY reportID");
+			if($result->num_rows == 0){
+				$result = queryMysql("SELECT * FROM orders WHERE shippingStatus='$search' ORDER BY reportID");
+				if($result->num_rows == 0){
+					$result = queryMysql("SELECT * FROM orders WHERE address='$search' ORDER BY reportID");
+					if($result->num_rows == 0){
+						$result = queryMysql("SELECT * FROM orders WHERE contactNum='$search' ORDER BY reportID");
+						if($result->num_rows == 0){
+							$result = queryMysql("SELECT * FROM orders WHERE quantity='$search' ORDER BY reportID");
+							if($result->num_rows == 0){
+								$result = queryMysql("SELECT * FROM orders WHERE productCode='$search' ORDER BY reportID");
+								if($result->num_rows == 0){
+									$result = queryMysql("SELECT * FROM orders WHERE stamp='$search' ORDER BY reportID");
+									if($result->num_rows == 0){
+										$result = queryMysql("SELECT * FROM orders WHERE trackingNum='$search' ORDER BY reportID");
+										if($result->num_rows == 0){
+											$result = queryMysql("SELECT * FROM orders WHERE remarks='$search' ORDER BY reportID");
+											if($result->num_rows == 0){
+												$result = queryMysql("SELECT * FROM orders WHERE bank='$search' ORDER BY reportID");
+												if($result->num_rows == 0){
+													$result = queryMysql("SELECT * FROM orders WHERE totalPrice='$search' ORDER BY reportID");
+													if($result->num_rows == 0){
+														
+													}
+												}else{
+													$_SESSION['secretField'] = 'bank';
+												}
+											}else{
+												$_SESSION['secretField'] = 'remarks';	
+											}
+										}else{
+											$_SESSION['secretField'] = 'trackingNum';
+										}
+									}else{
+										$_SESSION['secretField'] = 'stamp';
+									}
+								}else{
+									$_SESSION['secretField'] = 'productCode';
+								}
+							}else{
+								$_SESSION['secretField'] = 'quantity';
+							}
+						}else{
+							$_SESSION['secretField'] = 'contactNum';
+						}
+					}else{
+						$_SESSION['secretField'] = 'address';
+					}
+				}else{
+					$_SESSION['secretField'] = 'shippingstatus';
+				}
+			}else{
+				$_SESSION['secretField'] = 'name';
+			}
+		}else{
+			$_SESSION['secretField'] = 'platform';
+		}//SEARCH FOR CORRECT FIELD AND STORE AS $v 
+	$v = $_SESSION['secretField'];
+	if($search == ''){
+		$result = queryMysql("SELECT * FROM orders ORDER BY reportID");
+	}else{
+		$result = queryMysql("SELECT * FROM orders WHERE $v='$search' ORDER BY reportID");
+	}
+	if($result->num_rows !== 0){
+		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
+		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
+		<form id='orderDatabase' method='post'>
+		<table class='table table-striped'>
+		<thead>
+		<tr style='border-bottom:3px solid lightgrey'>
+			<th class='text-center'><input type='checkbox' table='orders' id='selectAll' onchange='selectall(this)'></th>
+			<th class='text-center'>ReportID<span id='reportID' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='reportID' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Name<span id='name' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='name' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Address<span id='address' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='address' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Phone Number<span id='contactNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='contactNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Item<span id='productCode' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='productCode' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Quantity<span id='quantity' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='quantity' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Tracking Number<span id='trackingNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='trackingNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone()'></i> <i class='fa fa-circle' style='cursor:pointer; color:yellow' onclick='jobDone1()'></i> <i class='fa fa-circle' style='cursor:pointer; color:orange' onclick='jobDone2()'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone3()'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Date<span id='date' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='date' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+		</tr>
+		</thead>
+		<tbody>";
+
+		$num = $result->num_rows;
+		for($i = 0; $i < $num; $i++){
+		$result->data_seek($i);
+		$select;
+		$var;
+		$row = $result->fetch_array(MYSQLI_ASSOC);
+		if($row['shippingStatus'] == 0){
+			$var = 0;
+			$row['shippingStatus'] = 'color:red';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 1){
+			$var = 1;
+			$row['shippingStatus'] = 'color:yellow';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 2){
+			$var = 2;
+			$row['shippingStatus'] = 'color:orange';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option selected='selected' value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 3){
+			$var = 3;
+			$row['shippingStatus'] = 'color:limegreen';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option selected='selected' value='3'>" . strtoupper('completed') . "</option></select>";
+		}
+		echo "<tr id='" . $row['reportID'] . "' status='$var' ondblclick='deleteOrdeRow(this)'>
+				<td id='" . $row['reportID'] . "'><input type='checkbox' id='" . $row['reportID'] . "' class='getcheckbox' onchange='selectMe(this)' table='orders' name='selectMe[]' value='" . $row['reportID'] . "'></td>
+				<td>" . $row['reportID'] . "</td>
+				<input type='hidden' name='reportID[]' value='" . $row['reportID'] . "'> 
+				<td><input type='text' name='editName[]' id='editName' value='" . $row['name'] . "'></td>
+				<td><input type='text' name='editAddress[]' id='editAddress' value='" . $row['address'] . "'></td>
+				<td><input type='text' name='editContactNum[]' id='editcontactNum' value='" . $row['contactNum'] . "'</td>
+				<td><input type='text' name='editProductCode[]' id='editproductcode' value='" . $row['productCode'] . "'</td>
+				<td><input type='text' name='editQuantity[]' id='editquantity' value='" . $row['quantity'] . "'</td>
+				<td><input type='text' name='editTrackingnum[]' id='edittrackingnum' value='" . $row['trackingNum'] . "'</td>
+				<td><i id='".$row['reportID']."' class='fa fa-circle statusChange' status='" . $row['shippingStatus'] . "' style='" . $row['shippingStatus'] . "; display:inline'></i>$select</td>
+				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
+				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
+				<td>$ " . $row['totalPrice'] . "</td>
+				<td>" . $row['stamp'] . "</td>
+				</tr>";
+		}
+		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
+	} 
+	}else{
 	$result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY reportID");
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
@@ -28,7 +163,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<th class='text-center'>Item<span id='productCode' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='productCode' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Quantity<span id='quantity' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='quantity' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Tracking Number<span id='trackingNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='trackingNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:gold' onclick='jobDone1(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone2(this)'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone()'></i> <i class='fa fa-circle' style='cursor:pointer; color:yellow' onclick='jobDone1()'></i> <i class='fa fa-circle' style='cursor:pointer; color:orange' onclick='jobDone2()'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone3()'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
@@ -46,15 +181,19 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		if($row['shippingStatus'] == 0){
 			$var = 0;
 			$row['shippingStatus'] = 'color:red';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('shipping') . "</option><option value='2'>" . strtoupper('completed') . "</option></select>";
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
 		}else if($row['shippingStatus'] == 1){
 			$var = 1;
-			$row['shippingStatus'] = 'color:gold';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('shipping') . "</option><option value='2'>" . strtoupper('completed') . "</option></select>";
+			$row['shippingStatus'] = 'color:yellow';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
 		}else if($row['shippingStatus'] == 2){
 			$var = 2;
+			$row['shippingStatus'] = 'color:orange';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option selected='selected' value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 3){
+			$var = 3;
 			$row['shippingStatus'] = 'color:limegreen';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('shipping') . "</option><option selected='selected' value='2'>" . strtoupper('completed') . "</option></select>";
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option selected='selected' value='3'>" . strtoupper('completed') . "</option></select>";
 		}
 		echo "<tr id='" . $row['reportID'] . "' status='$var' ondblclick='deleteOrdeRow(this)'>
 				<td id='" . $row['reportID'] . "'><input type='checkbox' id='" . $row['reportID'] . "' class='getcheckbox' onchange='selectMe(this)' table='orders' name='selectMe[]' value='" . $row['reportID'] . "'></td>
@@ -70,17 +209,28 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
 				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
 				<td>$ " . $row['totalPrice'] . "</td>
-				<td>" . $row['date'] . "</td>
+				<td>" . $row['stamp'] . "</td>
 				</tr>";
 		}
 		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
 	}
+}
 }else if(isset($_POST['asc'])){
 	$asc = $_POST['asc'];
-	$field = $_SESSION['field'];
-	$search = $_SESSION['search'];
-
- 	$result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY $asc ASC");
+	if(isset($_SESSION['search'])){//if chosen from search do this
+		$field = $_SESSION['field'];
+		$search = $_SESSION['search'];
+		if($field == 'all'){
+			$field = $_SESSION['secretField'];
+		}
+		if($search == ''){
+			$result = queryMysql("SELECT * FROM orders ORDER BY $asc ASC");
+		}else{
+			$result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY $asc ASC");
+		}
+	}else{// if from main window
+ 		$result = queryMysql("SELECT * FROM orders ORDER BY $asc ASC");	
+ 	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
 		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
@@ -96,7 +246,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<th class='text-center'>Item<span id='productCode' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='productCode' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Quantity<span id='quantity' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='quantity' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Tracking Number<span id='trackingNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='trackingNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:gold' onclick='jobDone1(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone2(this)'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone()'></i> <i class='fa fa-circle' style='cursor:pointer; color:yellow' onclick='jobDone1()'></i> <i class='fa fa-circle' style='cursor:pointer; color:orange' onclick='jobDone2()'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone3()'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
@@ -114,15 +264,19 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		if($row['shippingStatus'] == 0){
 			$var = 0;
 			$row['shippingStatus'] = 'color:red';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('shipping') . "</option><option value='2'>" . strtoupper('completed') . "</option></select>";
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
 		}else if($row['shippingStatus'] == 1){
 			$var = 1;
-			$row['shippingStatus'] = 'color:gold';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('shipping') . "</option><option value='2'>" . strtoupper('completed') . "</option></select>";
+			$row['shippingStatus'] = 'color:yellow';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
 		}else if($row['shippingStatus'] == 2){
 			$var = 2;
+			$row['shippingStatus'] = 'color:orange';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option selected='selected' value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 3){
+			$var = 3;
 			$row['shippingStatus'] = 'color:limegreen';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('shipping') . "</option><option selected='selected' value='2'>" . strtoupper('completed') . "</option></select>";
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option selected='selected' value='3'>" . strtoupper('completed') . "</option></select>";
 		}
 		echo "<tr id='" . $row['reportID'] . "' status='$var' ondblclick='deleteOrdeRow(this)'>
 				<td id='" . $row['reportID'] . "'><input type='checkbox' id='" . $row['reportID'] . "' class='getcheckbox' onchange='selectMe(this)' table='orders' name='selectMe[]' value='" . $row['reportID'] . "'></td>
@@ -138,17 +292,27 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
 				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
 				<td>$ " . $row['totalPrice'] . "</td>
-				<td>" . $row['date'] . "</td>
+				<td>" . $row['stamp'] . "</td>
 				</tr>";
 		}
 		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
 	}
 }else if(isset($_POST['desc'])){
 	$desc = $_POST['desc'];
-	$field = $_SESSION['field'];
-	$search = $_SESSION['search'];
-
- $result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY $desc DESC");
+	if(isset($_SESSION['search'])){//if chosen from search do this
+		$field = $_SESSION['field'];
+		$search = $_SESSION['search'];
+		if($field == 'all'){
+			$field = $_SESSION['secretField'];
+		}
+		if($search == ''){
+			$result = queryMysql("SELECT * FROM orders ORDER BY $desc DESC");
+		}else{
+			$result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY $desc DESC");
+		}
+	}else{// if from main window
+ 		$result = queryMysql("SELECT * FROM orders ORDER BY $desc DESC");	
+ 	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
 		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
@@ -164,7 +328,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<th class='text-center'>Item<span id='productCode' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='productCode' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Quantity<span id='quantity' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='quantity' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Tracking Number<span id='trackingNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='trackingNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:gold' onclick='jobDone1(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone2(this)'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone()'></i> <i class='fa fa-circle' style='cursor:pointer; color:yellow' onclick='jobDone1()'></i> <i class='fa fa-circle' style='cursor:pointer; color:orange' onclick='jobDone2()'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone3()'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
@@ -182,15 +346,19 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		if($row['shippingStatus'] == 0){
 			$var = 0;
 			$row['shippingStatus'] = 'color:red';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('shipping') . "</option><option value='2'>" . strtoupper('completed') . "</option></select>";
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
 		}else if($row['shippingStatus'] == 1){
 			$var = 1;
-			$row['shippingStatus'] = 'color:gold';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('shipping') . "</option><option value='2'>" . strtoupper('completed') . "</option></select>";
+			$row['shippingStatus'] = 'color:yellow';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
 		}else if($row['shippingStatus'] == 2){
 			$var = 2;
+			$row['shippingStatus'] = 'color:orange';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option selected='selected' value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 3){
+			$var = 3;
 			$row['shippingStatus'] = 'color:limegreen';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('shipping') . "</option><option selected='selected' value='2'>" . strtoupper('completed') . "</option></select>";
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option selected='selected' value='3'>" . strtoupper('completed') . "</option></select>";
 		}
 		echo "<tr id='" . $row['reportID'] . "' status='$var' ondblclick='deleteOrdeRow(this)'>
 				<td id='" . $row['reportID'] . "'><input type='checkbox' id='" . $row['reportID'] . "' class='getcheckbox' onchange='selectMe(this)' table='orders' name='selectMe[]' value='" . $row['reportID'] . "'></td>
@@ -206,7 +374,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
 				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
 				<td>$ " . $row['totalPrice'] . "</td>
-				<td>" . $row['date'] . "</td>
+				<td>" . $row['stamp'] . "</td>
 				</tr>";
 		}
 		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
@@ -289,16 +457,16 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		$result = queryMysql("SELECT * FROM orders");
 		$num = $result->num_rows;
 		$reportID = $num + 1;
-		$cusName = $data[0];
-		$platform = $data[1];
+		$platform = $data[0];
+		$cusName = $data[1];
 		$address = $data[2];
 		$contactNum = $data[3];
 		$quantity = $data[4];
 		$productCode = $data[5];
 		$trackingNumber = $data[6];
-		$shippingStatus = $data[7];
-		$remarks = $data[8];
-		$bank = $data[9];
+		$remarks = $data[7];
+		$bank = $data[8];
+		$shippingStatus = 0;
 		$stamp = date('Y-m-d');
 		$result = queryMysql("SELECT * FROM stock WHERE productCode='$productCode'");
 		$row = $result->fetch_assoc();	
@@ -324,7 +492,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	$quantity = $_POST['quantity'];
 	$productCode = $_POST['productCode'];
 	$trackingnumber = $_POST['trackingNumber'];
-	$shippingstatus = $_POST['shippingStatus'];
+	$shippingstatus = 0;
 	$bank = $_POST['bank'];
 	$remarks = $_POST['remarks'];
 	$result = queryMysql("SELECT * FROM stock WHERE productCode='$productCode'");
@@ -345,22 +513,45 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		echo 'Sorry, submitted values couldnt be registered, try again...';
 	}
 }else if(isset($_GET['resetOrder'])){//RESET Order ITEMS
-	$result = queryMysql('SELECT * FROM orders');
-	$row = $result->num_rows;
-	$i = 1;
-	while($i <= $row){
-		queryMysql("DELETE FROM orders WHERE reportID='$i'");
-		$i++;
+	$result = queryMysql("DROP TABLE orders");
+	$result = queryMysql("SHOW TABLES LIKE 'orders'");
+	if($result->num_rows == 0){
+		createTable('orders', '
+		reportID BIGINT NOT NULL,
+		platform VARCHAR(100),
+		name VARCHAR(250) NOT NULL,
+		address TEXT NOT NULL,
+		contactNum VARCHAR(50) NOT NULL,
+		quantity BIGINT NOT NULL,
+		productCode VARCHAR(200) NOT NULL,
+		stamp VARCHAR(100) NOT NULL,
+		trackingNum VARCHAR(100) NOT NULL,
+		shippingStatus INT(1) NOT NULL,
+		remarks VARCHAR(200),
+		bank VARCHAR(100),
+		totalPrice VARCHAR(100) NOT NULL,
+		UNIQUE KEY (reportID)'
+		);
 	}
 	echo "Orders reset completed, refreshing page please wait...";
 }else if(isset($_POST['eraseItemID'])){
 	$id = $_POST['eraseItemID'];
 	queryMysql("DELETE FROM orders WHERE reportID='$id'");
 
-  $field = $_SESSION['field'];
-  $search =	$_SESSION['search'];
-
-	$result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY reportID");
+  if(isset($_SESSION['search'])){//if chosen from search do this
+  	$field = $_SESSION['field'];
+	 $search =	$_SESSION['search'];
+	 if($field == 'all'){
+			$field = $_SESSION['secretField'];
+		}
+		if($search == ''){
+			$result = queryMysql("SELECT * FROM orders ORDER BY reportID ASC");
+		}else{
+			$result = queryMysql("SELECT * FROM orders WHERE $field='$search' ORDER BY reportID ASC");
+		}
+	}else{// if from main window
+ 		$result = queryMysql("SELECT * FROM orders ORDER BY reportID ASC");	
+ 	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
 		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
@@ -376,7 +567,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<th class='text-center'>Item<span id='productCode' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='productCode' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Quantity<span id='quantity' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='quantity' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Tracking Number<span id='trackingNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='trackingNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:gold' onclick='jobDone1(this)'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone2(this)'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone()'></i> <i class='fa fa-circle' style='cursor:pointer; color:yellow' onclick='jobDone1()'></i> <i class='fa fa-circle' style='cursor:pointer; color:orange' onclick='jobDone2()'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone3()'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
@@ -394,15 +585,19 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		if($row['shippingStatus'] == 0){
 			$var = 0;
 			$row['shippingStatus'] = 'color:red';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('shipping') . "</option><option value='2'>" . strtoupper('completed') . "</option></select>";
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
 		}else if($row['shippingStatus'] == 1){
 			$var = 1;
-			$row['shippingStatus'] = 'color:gold';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('shipping') . "</option><option value='2'>" . strtoupper('completed') . "</option></select>";
+			$row['shippingStatus'] = 'color:yellow';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
 		}else if($row['shippingStatus'] == 2){
 			$var = 2;
+			$row['shippingStatus'] = 'color:orange';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option selected='selected' value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 3){
+			$var = 3;
 			$row['shippingStatus'] = 'color:limegreen';
-			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('shipping') . "</option><option selected='selected' value='2'>" . strtoupper('completed') . "</option></select>";
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option selected='selected' value='3'>" . strtoupper('completed') . "</option></select>";
 		}
 		echo "<tr id='" . $row['reportID'] . "' status='$var' ondblclick='deleteOrdeRow(this)'>
 				<td id='" . $row['reportID'] . "'><input type='checkbox' id='" . $row['reportID'] . "' class='getcheckbox' onchange='selectMe(this)' table='orders' name='selectMe[]' value='" . $row['reportID'] . "'></td>
@@ -418,7 +613,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
 				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
 				<td>$ " . $row['totalPrice'] . "</td>
-				<td>" . $row['date'] . "</td>
+				<td>" . $row['stamp'] . "</td>
 				</tr>";
 		}
 		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
@@ -470,8 +665,9 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	  	<i class='fa fa-plus fa-2x' style='float:left' onclick='viewOrderEdit()'></i>
 	  	<h4 class='text-center page-header'>Orders Database</h4>
 	  	<form autocomplete='off' style='padding-bottom:20px' id='searchDatabase' method='post' enctype='multipart/form-data'>
-	  	<input type='text' name='search' class='fixInput text-center' style='width:100%' placeholder='Search'>
+	  	<input type='text' id='searchOrder' name='search' class='fixInput text-center' style='width:100%' placeholder='Search'>
 	  	By: <select id='field' name='field'>
+	  	<option selected='selected' value='all'>All</option>
 	  	<option value='reportID'>Report ID</option>
 	  	<option value='trackingNum'>Tracking Number</option>
 	  	<option value='name'>Customer Name</option>
@@ -483,12 +679,14 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	  	<option value='bank'>Bank</option>
 	  	<option value='remarks'>Remarks</option>
 	  	<option value='totalPrice'>Total Price</option>
-	  	<option selected='selected' value='date'>Date</option>
+	  	<option value='date'>Date</option>
 	  	</select>
 	  	<input type='date' name='date'>
-	  	<input type='submit' style='float:right; z-index:1' value='Search' class='btn btn-primary' onclick='searchDatabase2()'>
+	  	<input type='submit' id='searchbutton' style='float:right; z-index:1' value='Search' class='btn btn-primary' onclick='searchDatabase2()'>
 	  	</form>
-	  	<div id='boardConsole'>
+	  	<div id='boardConsole'>";
+	  	
+		echo"
 	  	</div>
 	  	</div>
 	  </div>
@@ -511,7 +709,6 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 				<input class='fixInput' type='text' name='productCode' placeholder='Product Code'>
 				<input class='fixInput' type='text' name='quantity' placeholder='Quantity'>
 				<input class='fixInput' type='text' name='trackingNumber' placeholder='Tracking Number'>
-				<input class='fixInput' type='text' name='shippingStatus' placeholder='Shipping Status'>
 				<input class='fixInput' type='text' name='bank' placeholder='Bank'>
 				<input class='fixInput' type='text' name='remarks' placeholder='Remarks'><br><br>
 				<input type='submit' value='Submit' class='btn btn-primary' onclick='submitNewOrder()'>
@@ -519,4 +716,73 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 		</div>
 	  </div>";
 	}
+
+
+	/*$result = queryMysql("SELECT * FROM orders ORDER BY reportID");
+		if($result->num_rows !== 0){
+		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
+		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
+		<form id='orderDatabase' method='post'>
+		<table class='table table-striped'>
+		<thead>
+		<tr style='border-bottom:3px solid lightgrey'>
+			<th class='text-center'><input type='checkbox' table='orders' id='selectAll' onchange='selectall(this)'></th>
+			<th class='text-center'>ReportID<span id='reportID' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='reportID' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Name<span id='name' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='name' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Address<span id='address' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='address' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Phone Number<span id='contactNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='contactNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Item<span id='productCode' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='productCode' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Quantity<span id='quantity' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='quantity' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Tracking Number<span id='trackingNum' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='trackingNum' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><i class='fa fa-circle' style='cursor:pointer; color:red' onclick='jobDone()'></i> <i class='fa fa-circle' style='cursor:pointer; color:yellow' onclick='jobDone1()'></i> <i class='fa fa-circle' style='cursor:pointer; color:orange' onclick='jobDone2()'></i> <i class='fa fa-circle' style='cursor:pointer; color:limegreen' onclick='jobDone3()'></i><br>Shipping Status<span id='shippingStatus' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='shippingStatus' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'>Date<span id='date' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='date' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+		</tr>
+		</thead>
+		<tbody>";
+
+		$num = $result->num_rows;
+		for($i = 0; $i < $num; $i++){
+		$result->data_seek($i);
+		$select;
+		$var;
+		$row = $result->fetch_array(MYSQLI_ASSOC);
+		if($row['shippingStatus'] == 0){
+			$var = 0;
+			$row['shippingStatus'] = 'color:red';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option selected='selected' value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 1){
+			$var = 1;
+			$row['shippingStatus'] = 'color:yellow';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option selected='selected' value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 2){
+			$var = 2;
+			$row['shippingStatus'] = 'color:orange';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option selected='selected' value='2'>" . strtoupper('shipping') . "</option><option value='3'>" . strtoupper('completed') . "</option></select>";
+		}else if($row['shippingStatus'] == 3){
+			$var = 3;
+			$row['shippingStatus'] = 'color:limegreen';
+			$select = "<select class='options' id='".$row['reportID']."' name='editShippingstatus[]' status='" . $row['shippingStatus'] . "'><option value='0'>" . strtoupper('pending') . "</option><option value='1'>" . strtoupper('printed') . "</option><option value='2'>" . strtoupper('shipping') . "</option><option selected='selected' value='3'>" . strtoupper('completed') . "</option></select>";
+		}
+		echo "<tr id='" . $row['reportID'] . "' status='$var' ondblclick='deleteOrdeRow(this)'>
+				<td id='" . $row['reportID'] . "'><input type='checkbox' id='" . $row['reportID'] . "' class='getcheckbox' onchange='selectMe(this)' table='orders' name='selectMe[]' value='" . $row['reportID'] . "'></td>
+				<td>" . $row['reportID'] . "</td>
+				<input type='hidden' name='reportID[]' value='" . $row['reportID'] . "'> 
+				<td><input type='text' name='editName[]' id='editName' value='" . $row['name'] . "'></td>
+				<td><input type='text' name='editAddress[]' id='editAddress' value='" . $row['address'] . "'></td>
+				<td><input type='text' name='editContactNum[]' id='editcontactNum' value='" . $row['contactNum'] . "'</td>
+				<td><input type='text' name='editProductCode[]' id='editproductcode' value='" . $row['productCode'] . "'</td>
+				<td><input type='text' name='editQuantity[]' id='editquantity' value='" . $row['quantity'] . "'</td>
+				<td><input type='text' name='editTrackingnum[]' id='edittrackingnum' value='" . $row['trackingNum'] . "'</td>
+				<td><i id='".$row['reportID']."' class='fa fa-circle statusChange' status='" . $row['shippingStatus'] . "' style='" . $row['shippingStatus'] . "; display:inline'></i>$select</td>
+				<td><input type='text' name='editBank[]' id='editbank' value='" . $row['bank'] . "'</td>
+				<td><input type='text' name='editRemarks[]' id='editremarks' value='" . $row['remarks'] . "'</td>
+				<td>$ " . $row['totalPrice'] . "</td>
+				<td>" . $row['date'] . "</td>
+				</tr>";
+		}
+		echo "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateOrders()'></td></tr></tbody></table></form><p>Poslaju&nbsp;<input type='radio' name='service' id='poslaju' value='poslaju'>&nbsp;Skynet&nbsp;<input type='radio' name='service' id='skynet' value='skynet'>&nbsp;Gdex&nbsp;<input type='radio' name='service' id='gdex' value='gdex'></p><br><button style='font-size:30px; color:black; transform:translate(0,-20px)' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
+		}*/
 ?>

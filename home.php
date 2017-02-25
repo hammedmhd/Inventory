@@ -14,7 +14,6 @@ if(isset($_POST['usern'])){ //updating account username and pass
 		queryMysql("UPDATE members SET Username='$edituser', Password='$editpass' WHERE Username='$currentuser'");
 		echo "Account login details updated successfully, logging you out, please re-sign in to continue using app.";
 	}
-
 }else if(isset($_POST['deleteUser'])){
 	$result = queryMysql("DELETE FROM members WHERE Username='" . $_SESSION['user'] . "'");
 	$result = queryMysql("SELECT * FROM members WHERE Username='" . $_SESSION['user'] . "'");

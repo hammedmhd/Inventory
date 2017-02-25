@@ -3,23 +3,7 @@ include ('functions.php');
 session_name('Store');
 session_start();
 $appname = 'Inventory System';
-/*<ul class='nav navbar-nav navbar-right'>
-					<li class='active'><a href='index.php' class='fa fa-user-circle fa-2x'><span style='font-size:15px'>" . ucfirst($_SESSION['user']) . "</span></a></li>
-					<li><a href='stock.php' class='linkme fa fa-database fa-2x'>&nbsp;<span class='badge blue'>$stock</span></a></li>
-					<li><a href='orders.php' class='linkme fa fa-exchange fa-2x'>&nbsp;<span class='badge green'>$complete</span>&nbsp;<span class='badge gold'>$shipping</span>&nbsp;<span class='badge red'>$orders</span></a></li>
-					<li><a class='fa fa-sign-out fa-2x' href='index.php?logout'></a></li>
-				</ul><nav class='navbar navbar-default navbar-fixed-top'>
-			<div class='navbar-header'>
-				<button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#dropmenu' aria-expanded='false'>
-				<span class='icon-bar'></span>
-				<span class='icon-bar'></span>
-				<span class='icon-bar'></span>
-				</button>
-				<p class='navbar-brand'><span id='header'>Inventory System</p>
-			</div>
-			<div class='collapse navbar-collapse' id='dropmenu'>
-			</div>
-		</nav>*/
+
 if(isset($_POST['user'])){
 	$user = sanitizeString($_POST['user']);
 	$pass = sanitizeString($_POST['pass']);
@@ -40,10 +24,12 @@ if(isset($_GET['logout'])){
 
 if(isset($_SESSION['user'])){
 $result = queryMysql("SELECT * FROM orders WHERE shippingStatus='0'");
-$orders = $result->num_rows;
+$pending = $result->num_rows;
 $result = queryMysql("SELECT * FROM orders WHERE shippingStatus='1'");
-$shipping = $result->num_rows;
+$printed = $result->num_rows;
 $result = queryMysql("SELECT * FROM orders WHERE shippingStatus='2'");
+$shipping = $result->num_rows;
+$result = queryMysql("SELECT * FROM orders WHERE shippingStatus='3'");
 $complete = $result->num_rows;
 $result = queryMysql("SELECT * FROM stock");
 $stock = $result->num_rows;
@@ -55,7 +41,7 @@ echo "<!DOCTYPE html>
 			<meta http-equiv='X-UA-Compatible' content='IE=edge'>
 			<meta name='viewport' content='width=device-width, inital-scale=1.0'>
 			<link rel='stylesheet' href='css/bootstrap.css?0.3'>
-			<link rel='stylesheet' href='css/style.css?7.7'>
+			<link rel='stylesheet' href='css/style.css?7.9'>
 			<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 			<link rel='shortcut icon' href='img/ddd.ico' type='image/x-icon'>
 			<style type='text/css' media='print'>
@@ -83,7 +69,11 @@ echo "<!DOCTYPE html>
 				<ul class='nav navbar-nav navbar-right'>
 					<li class='active'><a href='index.php' class='fa fa-user-circle fa-2x'><span style='font-size:15px'>" . ucfirst($_SESSION['user']) . "</span></a></li>
 					<li><a href='stock.php' class='linkme fa fa-database fa-2x'>&nbsp;<span class='badge blue'>$stock</span></a></li>
-					<li><a href='orders.php' class='linkme fa fa-exchange fa-2x'>&nbsp;<span class='badge green'>$complete</span>&nbsp;<span class='badge gold'>$shipping</span>&nbsp;<span class='badge red'>$orders</span></a></li>
+					<li><a href='orders.php' style='padding:20px' class='linkme fa fa-exchange fa-2x'></a></li>
+					<li style='margin-top:20px'><span class='badge red' id='0' onclick='test(this.id)'>$pending</span></li>
+					<li style='margin-top:20px'><span class='badge yellow' id='1' onclick='test(this.id)'>$printed</span></li>
+					<li style='margin-top:20px'><span class='badge orange' id='2' onclick='test(this.id)'>$shipping</span></li>
+					<li style='margin-top:20px'><span class='badge green' id='3' onclick='test(this.id)'>$complete</span></li>
 					<li><a class='fa fa-sign-out fa-2x' href='index.php?logout'></a></li>
 				</ul>
 			</div>
@@ -92,7 +82,7 @@ echo "<!DOCTYPE html>
 		<p style='width:100%; display:none; position:fixed; z-index:1' class='text-center alert alert-info see' id='lstatus'></p>
 		 <div id='userView'>
 	 	 </div>
-		<script src='js/style.js?7.6'></script></body></html>";
+		<script src='js/style.js?8.5'></script></body></html>";
 }else{
 echo "<!DOCTYPE html>
 <html>

@@ -36,7 +36,7 @@ if($rows == 0){
 		contactNum VARCHAR(50) NOT NULL,
 		quantity BIGINT NOT NULL,
 		productCode VARCHAR(200) NOT NULL,
-		date VARCHAR(100) NOT NULL,
+		stamp VARCHAR(100) NOT NULL,
 		trackingNum VARCHAR(100) NOT NULL,
 		shippingStatus INT(1) NOT NULL,
 		remarks VARCHAR(200),

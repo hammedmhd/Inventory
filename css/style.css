@@ -3,7 +3,7 @@ html, body{
 	padding:0;
 	box-sizing: border-box;
 	height:100%;
-	font-family: verdana;
+	font-family: sans;
 	//user-select:none;
 }
 
@@ -124,6 +124,7 @@ body{
 .fa.fa-exchange{
 	cursor:pointer;
 	color:gold;
+	
 }
 
 .fa.fa-database{
@@ -272,15 +273,24 @@ input[type='password']:focus{
 	color:black;
 }
 
+.orange{
+	background-color: orange;
+	color:white;
+}
+
 .red{
 	background-color: red;
 }
+
+.yellow{
+	background-color: yellow;
+	color:black;
+}
+
 .green{
 	background-color:limegreen;
 	color:white;
 }
-
-
 
 .fa.fa-user{
 	color:gold;
