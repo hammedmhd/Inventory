@@ -82,7 +82,6 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
-		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
 		<form id='orderDatabase' method='post'>
 		<table class='table table-striped'>
 		<thead>
@@ -99,7 +98,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'>Date<span id='date' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='date' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><span class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>Date<span id='stamp' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='stamp' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span</th>
 		</tr>
 		</thead>
 		<tbody>";
@@ -233,7 +232,6 @@ if(isset($_POST['search'])){//SEARCH ORDERS
  	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
-		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
 		<form id='orderDatabase' method='post'>
 		<table class='table table-striped'>
 		<thead>
@@ -250,7 +248,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'>Date<span id='date' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='date' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><span class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>Date<span id='stamp' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='stamp' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 		</tr>
 		</thead>
 		<tbody>";
@@ -315,7 +313,6 @@ if(isset($_POST['search'])){//SEARCH ORDERS
  	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
-		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
 		<form id='orderDatabase' method='post'>
 		<table class='table table-striped'>
 		<thead>
@@ -332,7 +329,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'>Date<span id='date' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='date' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><span class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>Date<span id='stamp' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='stamp' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 		</tr>
 		</thead>
 		<tbody>";
@@ -554,7 +551,6 @@ if(isset($_POST['search'])){//SEARCH ORDERS
  	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
-		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>
 		<form id='orderDatabase' method='post'>
 		<table class='table table-striped'>
 		<thead>
@@ -571,7 +567,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 			<th class='text-center'>Bank<span id='bank' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='bank' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Remarks<span id='remarks' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='remarks' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 			<th class='text-center'>Total Price<span id='totalPrice' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='totalPrice' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'>Date<span id='date' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='date' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
+			<th class='text-center'><span class='fa fa-times-circle fa-2x close' onclick='emptyConsole2()'></span>Date<span id='stamp' style='cursor:pointer' onclick='ordersByDesc(this.id)'>&utrif;</span><span id='stamp' style='cursor:pointer' onclick='ordersByAsc(this.id)'>&dtrif;</span></th>
 		</tr>
 		</thead>
 		<tbody>";
@@ -684,9 +680,7 @@ if(isset($_POST['search'])){//SEARCH ORDERS
 	  	<input type='date' name='date'>
 	  	<input type='submit' id='searchbutton' style='float:right; z-index:1' value='Search' class='btn btn-primary' onclick='searchDatabase2()'>
 	  	</form>
-	  	<div id='boardConsole'>";
-	  	
-		echo"
+	  	<div id='boardConsole'>
 	  	</div>
 	  	</div>
 	  </div>

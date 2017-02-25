@@ -62,8 +62,8 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 	if($field == 'stamp'){
 		$search = $date;
 	}
-	$_SESSION['field'] = $field;
-	$_SESSION['search'] = $search;
+	$_SESSION['fieldstock'] = $field;
+	$_SESSION['searchstock'] = $search;
 
 	$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY stockID");
 	if($result->num_rows !== 0){
@@ -100,9 +100,13 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 	}
 }else if(isset($_POST['asc'])){
 	$asc = $_POST['asc'];
-	$field = $_SESSION['field'];
-	$search = $_SESSION['search'];
-	$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY $asc ASC");
+	if(isset($_SESSION['fieldstock'])){
+		$field = $_SESSION['fieldstock'];
+		$search = $_SESSION['searchstock'];
+		$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY $asc ASC");
+	}else{
+		$result = queryMysql("SELECT * FROM stock ORDER BY $asc ASC");
+	}
 	if($result->num_rows !== 0){
 	echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
 		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole()'></span>
@@ -137,9 +141,13 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 	}
 }else if(isset($_POST['desc'])){
 	$desc = $_POST['desc'];
-	$field = $_SESSION['field'];
-	$search = $_SESSION['search'];
-	$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY $desc DESC");
+	if(isset($_SESSION['fieldstock'])){
+		$field = $_SESSION['fieldstock'];
+		$search = $_SESSION['searchstock'];
+		$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY $desc DESC");
+	}else{
+		$result = queryMysql("SELECT * FROM stock ORDER BY $desc DESC");
+	}
 	if($result->num_rows !== 0){
 	echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
 		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole()'></span>
@@ -282,14 +290,18 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 	echo $value;
 }else if(isset($_POST['eraseItemID'])){//DELETE SINGLE ITEM
 	$id = $_POST['eraseItemID'];
-	$field = $_SESSION['field'];
-	$search = $_SESSION['search'];
 	$result = queryMysql("SELECT * FROM stock WHERE stockID='$id'");
 	$row = $result->fetch_array(MYSQLI_ASSOC);
 	setcookie($row['productCode'], '', time() - 3600, '/');
 	queryMysql("DELETE FROM stock WHERE stockID='$id'");
 
-	$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY stockID");
+	if(isset($_SESSION['fieldstock'])){
+		$field = $_SESSION['fieldstock'];
+		$search = $_SESSION['searchstock'];
+		$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY stockID ASC");
+	}else{
+		$result = queryMysql("SELECT * FROM stock ORDER BY stockID ASC");
+	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
 		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole()'></span>
