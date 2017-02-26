@@ -134,7 +134,29 @@ if(isset($_POST['slist'])){
 				echo $gd;
 			}
 		}else echo 'Service not selected';
-	}
+		/*$names = [];
+		foreach($_POST['slist'] as $id => $p){
+			$result = queryMysql("SELECT * FROM orders WHERE reportID='$p'");
+			$row = $result->fetch_array(MYSQLI_ASSOC);
+			array_push($names, $row['name']);
+		}
+		$all = array_unique($names);
+			foreach($all as $id => $a){
+				$string[$id] = '';
+				$result = queryMysql("SELECT * FROM orders WHERE name='$a' ORDER BY reportID");
+				$rows = $result->num_rows;
+				for($j = 0; $j < $rows; $j++){
+					$result->data_seek($j);
+					$row = $result->fetch_array(MYSQLI_ASSOC);
+					$string[$id] .= $row['quantity'] . '*' . strtoupper($row['productCode']);
+					if(($j+1) !== $rows){
+						$string[$id] .= ' & ';
+					}
+				}
+				$result = queryMysql("SELECT * FROM orders WHERE reportID='".$_POST['slist'][$id]."' ORDER BY reportID");
+				$row = $result->fetch_array(MYSQLI_ASSOC);
+				*/
+			}
 }else{
 echo "<!DOCTYPE html>
 <html>
@@ -160,9 +182,89 @@ echo "<!DOCTYPE html>
 	<script src='js/jquery-3.1.1.js'></script>
 	<script src='js/bootstrap.js'></script>
 	<div id='printableData' class='col-xs-12'>
+	<p class='text-center'><a class='btn btn-primary' href='index.php' style='width:30%'>Back</a>&nbsp;<a style='width:30%' class='btn btn-primary' href='javascript:window.print()'>Print</a></p>
 	<h1>Nothing to display, please select data and try again.</h1>
 	</div>
 	<script src='js/style.js?6.3'></script></body></html>";
 }
+/*		
+		echo $poslaju[$id] += 
+$skynet[$id] =  "
+					<table align='left' border='0' style='width:10.05cm; height:3.8cm;'>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
 
+					<table align='left' border='0' style='width: 5cm; height: 2.2cm; float: left; margin-left: 6.3cm;'>
+						<tr>
+							<td align='left' style='font-size:11.4px; vertical-align:top;'>".$row['quantity'].'*'.strtoupper($row['productCode'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 8.5cm; height: 2.2cm; margin-left: 1cm; float: left;'>
+						<tr>
+							<td align='left' style='font-size:12px; vertical-align: top;'>".strtoupper($row['address'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 4.8cm; height: 1cm; margin-left: 12cm; float: left;'>
+						<tr>
+							<td align='left' style='font-size: 11px;'>".strtoupper($a)."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 5cm; height: 1cm; float: left;'>
+						<tr>
+							<td align='center' style='font-size: 11px;'>".$row['contactNum']."</td>
+						</tr>
+					</table>
+				";
+				$gdex[$id] = "
+				
+					<table align='left' border='0' style='width:10.05cm; height:3.5cm;'>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
+
+					<table align='right' border='0' style='width: 5cm; height: 1.6cm; float: left; margin-left: 6.2cm;'>
+						<tr>
+							<td align='right' style='font-size:11.4px; vertical-align:center;'>".$row['quantity'].'*'.strtoupper($row['productCode'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 8.5cm; height: 1.6cm; float: left; margin-left: 0.8cm;'>
+						<tr>
+							<td align='left' style='font-size:12px; vertical-align: top;'>".strtoupper($row['address'])."</td>
+						</tr>
+					</table>
+
+					<table align='left' border='0' style='width: 4.7cm; height: 1cm; margin-left: 13cm; float: left;'>
+						<tr>
+							<td align='left' style='font-size: 11px; vertical-align: top;'>".strtoupper($a)."</td>
+						</tr>
+						<tr>
+							<td align='left' style='font-size: 11px; vertical-align: top;'>".$row['contactNum']."</td>
+						</tr>
+					</table>
+
+
+					if($service == 'poslaju'){
+				foreach($poslaju as $post){
+					echo $post;
+				}
+				}else if($service == 'skynet'){
+					foreach($skynet as $sky){
+					echo $sky;
+					}
+				}else if($service == 'gdex'){
+					foreach($gdex as $gd){
+					echo $gd;
+					}
+				}else echo 'Service not selected';
+			}
+				";
+				
+			*/
 ?>
