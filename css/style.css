@@ -3,7 +3,7 @@ html, body{
 	padding:0;
 	box-sizing: border-box;
 	height:100%;
-	font-family: sans;
+	font-family: sans-serif;
 	//user-select:none;
 }
 
@@ -13,6 +13,10 @@ body{
 
 .skyblue{
  background-color: rgba(0, 204, 250, 1);
+}
+
+.fa.fa-user-circle{
+		height:60px;
 }
 
 .boxgreen{
@@ -124,7 +128,6 @@ body{
 .fa.fa-exchange{
 	cursor:pointer;
 	color:gold;
-	
 }
 
 .fa.fa-database{
@@ -146,8 +149,10 @@ body{
 .targetAddUser{
 	display:none;
 }
+
 .navbar{
-	margin-bottom:0;
+	//margin-bottom:200px;
+	height:60px;
 }
 
 .black{
@@ -159,9 +164,11 @@ body{
 }
 
 #header{
+	margin:0;
+	padding:0;
 	position: relative;
 	top:10%;
-	color:black;
+	//color:black;
 }
 
 .shipping:after{
@@ -181,11 +188,11 @@ body{
 	cursor:pointer;
 	//border:2px solid gold;
 	color:black;
-	padding:0;
+	//padding:0px;
 }
 
 .fa.fa-sign-out{
-	height:61px;
+	height:60px;
 }
 
 .see{
@@ -195,9 +202,10 @@ body{
 }
 
 .nav.navbar-nav.navbar-right li a{
-	padding:18px;
+	height:60px;
 	//padding:22px 19px 19px 19px;
 	color:black;
+	line-height:30px;
 }
 
 .nav.navbar-nav.navbar-right li i{
@@ -266,6 +274,10 @@ input[type='password']:focus{
 .badge{
 	//background-color:rgba(249, 93, 93, 1);
 	font-size:16px;
+	margin-left:5px;
+	margin-right:5px;
+	margin-top:20px;
+	margin-bottom:18px;
 }
 
 .gold{
@@ -298,7 +310,7 @@ input[type='password']:focus{
 }
 
 #userView{
-	position: relative;
+	//position: relative;
 }
 
 #backgroundpic{

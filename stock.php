@@ -16,7 +16,7 @@ $result = queryMysql("SELECT * FROM stock");
 				'originalquantity' => $_COOKIE[$SC],
 				'price' => $row['price']
 				);
-			}
+			} //get all stock
 			
 	$result = queryMysql("SELECT * FROM orders");
 		$rows = $result->num_rows;
@@ -52,20 +52,26 @@ $result = queryMysql("SELECT * FROM stock");
 				}
 				}else $result = queryMysql("UPDATE stock SET quantity='" . $s['originalquantity'] . "' WHERE stockID='$stockid'");
 			}
-		}
+		} //get all orders
 
 
 if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
+	$variable = false;
 	$date = sanitizeString($_POST['date']);
 	$search = sanitizeString($_POST['searchD']);
 	$field = sanitizeString($_POST['field']);
 	if($field == 'stamp'){
 		$search = $date;
+	}else if($field == 'All'){
+		$variable = true;
 	}
 	$_SESSION['fieldstock'] = $field;
 	$_SESSION['searchstock'] = $search;
-
-	$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY stockID");
+	if($variable == true){
+		$result = queryMysql("SELECT * FROM stock ORDER BY stockID");
+	}else{
+		$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY stockID");
+	}
 	if($result->num_rows !== 0){
 		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
 		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole()'></span>
@@ -103,7 +109,11 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 	if(isset($_SESSION['fieldstock'])){
 		$field = $_SESSION['fieldstock'];
 		$search = $_SESSION['searchstock'];
-		$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY $asc ASC");
+		if($field == 'All'){
+			$result = queryMysql("SELECT * FROM stock ORDER BY $asc ASC");	
+		}else{
+			$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY $asc ASC");
+		}
 	}else{
 		$result = queryMysql("SELECT * FROM stock ORDER BY $asc ASC");
 	}
@@ -144,7 +154,11 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 	if(isset($_SESSION['fieldstock'])){
 		$field = $_SESSION['fieldstock'];
 		$search = $_SESSION['searchstock'];
-		$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY $desc DESC");
+		if($field == 'All'){
+			$result = queryMysql("SELECT * FROM stock ORDER BY $desc DESC");	
+		}else{
+			$result = queryMysql("SELECT * FROM stock WHERE $field='$search' ORDER BY $desc DESC");
+		}
 	}else{
 		$result = queryMysql("SELECT * FROM stock ORDER BY $desc DESC");
 	}
@@ -378,54 +392,21 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 	  	<form autocomplete='off' style='padding-bottom:20px' id='searchDatabase' method='post' enctype='multipart/form-data'>
 	  	<input type='text' name='searchD' class='fixInput text-center' style='width:100%' placeholder='Search'>
 	  	By: <select id='field' name='field'>
+	  	<option selected='selected' value='All'>All</option>
 	  	<option value='stockID'>Stock ID</option>
 	  	<option value='productCode'>Product Code</option>
 	  	<option value='quantity'>Quantity</option>
 	  	<option value='price'>Price</option>
-	  	<option selected='selected' value='stamp'>Date</option>
+	  	<option value='stamp'>Date</option>
 	  	</select>
 	  	<input type='date' name='date'>
-	  	<input type='submit' style='float:right; z-index:1; transform:translate(0,10px)' value='Search' class='btn btn-primary' onclick='searchDatabase()'>
+	  	<input type='submit' id='searchem' style='float:right; z-index:1; transform:translate(0,10px)' value='Search' class='btn btn-primary' onclick='searchDatabase()'>
 	  	</form>
-	  	<div id='boardConsole'>";
-	  	$result = queryMysql("SELECT * FROM stock ORDER BY stockID");
-		if($result->num_rows !== 0){
-		echo "<div style='background-color:#f5f5f5; padding-bottom:10px; margin-bottom:10px; min-width:100%; overflow:auto; border-radius:10px; transform:translate(0,25px)' class='col-xs-12'>
-		<span style='transform:translate(5px,10px)' class='fa fa-times-circle fa-2x close' onclick='emptyConsole()'></span>
-		<form id='stockDatabase' method='post'>
-		<table class='table table-striped'>
-		<thead>
-		<tr style='border-bottom:3px solid lightgrey'>
-			<th class='text-center'><input type='checkbox' table='stock' id='selectAll' onchange='selectall(this)'></th>
-			<th class='text-center'>Stock ID<span id='stockID' style='cursor:pointer' onclick='stockByDesc(this.id)'>&utrif;</span><span id='stockID' style='cursor:pointer' onclick='stockByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'>Product Code<span id='productCode' style='cursor:pointer' onclick='stockByDesc(this.id)'>&utrif;</span><span id='productCode' style='cursor:pointer' onclick='stockByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'>Quantity<span id='quantity'  style='cursor:pointer' onclick='stockByDesc(this.id)'>&utrif;</span><span id='quantity' style='cursor:pointer' onclick='stockByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'>Price<span id='price' style='cursor:pointer' onclick='stockByDesc(this.id)'>&utrif;</span><span id='price' style='cursor:pointer' onclick='stockByAsc(this.id)'>&dtrif;</span></th>
-			<th class='text-center'>Date<span id='stamp' style='cursor:pointer' onclick='stockByDesc(this.id)'>&utrif;</span><span id='stamp' style='cursor:pointer' onclick='stockByAsc(this.id)'>&dtrif;</span></th>
-		</tr>
-		</thead>
-		<tbody>";
-
-		$num = $result->num_rows;
-		for($i = 0; $i < $num; $i++){
-		$result->data_seek($i);
-		$row = $result->fetch_array(MYSQLI_ASSOC);
-		echo "<tr id='" . $row['stockID'] . "' ondblclick='deleteStockItemRow(this.id)'>
-				<td id='" . $row['stockID'] . "'><input type='checkbox' name='selectMe[]' onchange='selectMe(this)' table='stock' value='" . $row['stockID'] . "' id='" . $row['stockID'] . "' class='getcheckbox'></td>
-				<td>" . $row['stockID'] . "</td>
-				<input type='hidden' name='stockID[]' value='" . $row['stockID'] . "'> 
-				<td><input type='text' name='editproductcode[]' id='productCode' value='" . $row['productCode'] . "'></td>
-				<td><input type='text' name='editquantity[]' id='quantity' value='" . $row['quantity'] . "'></td>
-				<td><span>$</span><input type='text' name='editprice[]' id='price' value='" . $row['price'] . "'></td>
-				<td>" . $row['stamp'] . '</td></tr>';
-		}
-		echo "<tr><td></td><td></td><td></td><td></td><td></td><td><input type='submit' value='Update' class='btn btn-primary' onclick='updateStock()'></td></tbody></table></form><button style='font-size:25px; color:black' class='text-center btn btn-warning' onclick='directToPrint()'>Select Template</button></div>";
-		}
-		echo "
+	  	<div id='boardConsole'>
 	  	</div>
 	  	</div>
-	  </div>
-	  <div id='targetStock' class='col-xs-6 col-xs-offset-3'>
+	  	</div>
+	  	<div id='targetStock' class='col-xs-6 col-xs-offset-3'>
 		<div class='alert alert-info skyblue'>
 			<i class='fa fa-arrow-circle-left fa-2x' style='float:left' onclick='showBoardConsole()'></i>
 			<i class='fa fa-times-circle fa-2x close' onclick='hideme3()'></i>
@@ -437,9 +418,9 @@ if(isset($_POST['searchD'])){//SEARCH STOCK ITEMS
 			<input style='margin-bottom:5px' type='submit' name='submitFile' value='Upload' class='btn btn-primary' onclick='submitStockCSV()'>
 			</form>
 			<form id='newStock' autocomplete='off' class='text-center'>
-				<input class='fixInput' type='text' id='productCode' name='newproduct' placeholder='Product Code'>
-				<input class='fixInput' type='text' id='price' name='newprice' placeholder='Price'>
-				<input class='fixInput' type='text' id='quantity' name='newquantity' placeholder='Quantity'><br><br>
+				<input class='fixInput text-center' type='text' id='productCode' name='newproduct' placeholder='Product Code'>
+				<input class='fixInput text-center' type='text' id='price' name='newprice' placeholder='Price'>
+				<input class='fixInput text-center' type='text' id='quantity' name='newquantity' placeholder='Quantity'><br><br>
 				<input type='submit' value='Submit' id='addem' class='btn btn-primary' onclick='submitNewStock()'>
 			</form>
 		</div>

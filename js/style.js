@@ -1,18 +1,25 @@
 function loadPage(e){
-	$('#userView').load(e, function(){
+	$('#lstatus').html('Loading, please wait...');
+	$('#lstatus').fadeIn(300, function(){
+		$('#userView').load(e, function(){
 		if(e.match(/(stock.php)/g)){
+			$('#lstatus').fadeOut(300, function(){
 				$('#boardView').fadeIn(300);
+				//$('#searchem').click();
+				$('#header').html('Stock Items');
+			});
 		}else if(e.match(/(orders.php)/g)){
+			$('#lstatus').fadeOut(300, function(){
+				$('#header').html('Orders');
 				$('#boardView2').fadeIn(300);
-		}	
+			});
+		}
 	});
-	if(e.match(/(home.php)/g)){
-		$('#header').html('Inventory System');
-	}else if(e.match(/(orders.php)/g)){
-		$('#header').html('Orders');
-	}else if(e.match(/(stock.php)/g)){
-		$('#header').html('Stock Items');
-	}
+		if(e.match(/(home.php)/g)){
+			$('#header').html('Inventory System');
+			$('#lstatus').fadeOut(300);
+		}
+	});
 }
 
 $(document).ready(function(){
@@ -25,7 +32,7 @@ $(document).ready(function(){
 	var user = $('#header').html();
 	$('.linkme').on('click', function(e){
 	e.preventDefault();
-	loadPage(e.target.href);
+	loadPage(e.target.href, function(){
 	if(e.target.href.match(/(home.php)/g)){
 		$('#header').html(user);
 	}else if(e.target.href.match(/(orders.php)/g)){
@@ -33,6 +40,9 @@ $(document).ready(function(){
 	}else if(e.target.href.match(/(stock.php)/g)){
 		$('#header').html('Stock Items');
 	}
+	
+
+	});
 	$('.active').attr('class','');
 	var parent = $(this).parent();
 	parent.attr('class','active');
@@ -470,30 +480,6 @@ function resetStock(){
 	}
 }
 
-function resetOrder(){
-	var q = confirm("You're about to reset the entire order database to initial state, are you sure?");
-	if(q == true){
-		$('#lstatus').html('Loading, please wait...');
-		$('#lstatus').fadeIn(500);
-	$.get('orders.php', {resetOrder: 1}, function(data){
-		//if($('#boardView').is(':visible')){
-			//$('#boardView').fadeOut(500);
-		//}
-		$('#lstatus').fadeOut(500,function(){
-				$('#lstatus').html(data);
-				$('#lstatus').fadeIn(500);
-			});
-		setTimeout(function(){
-			$('#lstatus').fadeOut(500,function(){
-			if(data.match(/(refreshing)/g)){
-				location.assign('index.php');
-			}
-			});
-		}, 1000);
-		});
-	}
-}
-
 function updateStock(){
 	$('#stockDatabase').submit(function(e){
 	if(confirm('Updating Stock items, are you sure?') == true){
@@ -584,6 +570,20 @@ function updateOrdersBadge(e){
 	});
 }
 
+function updateAllBadge(){
+	$.get('orders.php', {statusBadge: 0}, function(data){
+		$('.red').html(data);
+	});
+	$.get('orders.php', {statusBadge: 1}, function(data){
+		$('.yellow').html(data);
+	});
+	$.get('orders.php', {statusBadge: 2}, function(data){
+		$('.orange').html(data);
+	});
+	$.get('orders.php', {statusBadge: 3}, function(data){
+		$('.green').html(data);
+	});
+}
 
 function deleteOrdeRow(id){
 if(confirm('Permenantely deleting selected Order entry, are you sure?') == true){
@@ -660,7 +660,6 @@ function selectall(s){
 }
 
 function getSelectedList(){
-	console.log('here');
 	var slist = localStorage.selected.split(',');
 	var service = localStorage.service;
 	if(slist){
@@ -679,94 +678,93 @@ function getSelectedList(){
 	}
 }
 
-function selectStatus(e){
-	//$('#lstatus').html('Loading, please wait...');
-	//$('#lstatus').fadeIn(200);
-	var newStatus;
-	var prevStatus;
-	var finalColor;
-	var action = 'no action',
-		pending = 'pending',
-		complete = 'complete';
-		var options = $('.options');
-		for(var i = 0; i < options.length; i++){
-			if($('.options').eq(i).attr('id') == e.id){
-				$('.options').eq(i).fadeIn();
-			}
-		}
-	/*if(e.getAttribute('status') == 'color:red'){
-		newStatus = 1;
-		prevStatus = 0;
-		finalColor = 'gold';
-	}else if(e.getAttribute('status') == 'color:gold'){
-		prevStatus = 1;
-		if(prevStatus == 0){
 
+function toPending(){ // setting all statuseUpdate to COMPLETE
+	$('#lstatus').html('Loading, please wait...');
+	$('#lstatus').fadeIn(500);
+	if(confirm('Updating status of current to pending(if non selected, most recent selected list is used, are you sure you\'d like to continue?') == true)
+	{
+	var list = localStorage.selected;
+	var list = list.split(',');
+	list.shift();
+	$.ajax({
+		url: 'orders.php',
+		type: 'post',
+		data: {setStatusPending: list},
+		success: function(response){
+			$('#lstatus').fadeOut(500,function(){
+				updateAllBadge();
+				$('#boardConsole').html(response);
+			});
 		}
-			newStatus = 2;
-			finalColor = 'limegreen';
-		}else{
-			newStatus = 0;
-			prevStatus = 1;
-			count1 = 0;
-			finalColor = 'red';
-		}
-	}else if(e.getAttribute('status') == 'color:limegreen'){
-		newStatus = 1;
-		prevStatus = 2;
-		count1++;
-		finalColor = 'gold';
+	});
 	}
-	console.log('current status: ' + prevStatus + ' new status: ' + newStatus + ' NEWColor: ' + finalColor);
-	*/	
 }
 
-function jobDone(){ // setting all statuseUpdate to COMPLETE
-	var options = document.getElementsByClassName('options');
-	//var bpx = $('#allofem').prop('checked');
-		for(var i = 0; i < options.length; i++){
-			options[i].children[0].removeAttribute('selected');
-			options[i].children[1].removeAttribute('selected');
-			options[i].children[2].removeAttribute('selected');
-			options[i].children[3].removeAttribute('selected');
-			options[i].children[0].setAttribute('selected','selected');
+function toPrinted(){ // setting all statuseUpdate to COMPLETE
+	$('#lstatus').html('Loading, please wait...');
+	$('#lstatus').fadeIn(500);
+	if(confirm('Updating status of current to printed(if non selected, most recent selected list is used, are you sure you\'d like to continue?') == true)
+	{
+	var list = localStorage.selected;
+	var list = list.split(',');
+	list.shift();
+	$.ajax({
+		url: 'orders.php',
+		type: 'post',
+		data: {setStatusPrinted: list},
+		success: function(response){
+			$('#lstatus').fadeOut(500,function(){
+				updateAllBadge();
+				$('#boardConsole').html(response);
+			});
 		}
+	});
+	}
 }
 
-function jobDone1(){ // setting all statuseUpdate to COMPLETE
-	var options = document.getElementsByClassName('options');
-	//var bpx = $('#allofem').prop('checked');
-		for(var i = 0; i < options.length; i++){
-			options[i].children[0].removeAttribute('selected');
-			options[i].children[1].removeAttribute('selected');
-			options[i].children[2].removeAttribute('selected');
-			options[i].children[3].removeAttribute('selected');
-			options[i].children[1].setAttribute('selected','selected');
+function toShipping(){ // setting all statuseUpdate to COMPLETE
+	$('#lstatus').html('Loading, please wait...');
+	$('#lstatus').fadeIn(500);
+	if(confirm('Updating status of current to shipping(if non selected, most recent selected list is used, are you sure you\'d like to continue?') == true)
+	{
+	var list = localStorage.selected;
+	var list = list.split(',');
+	list.shift();
+	$.ajax({
+		url: 'orders.php',
+		type: 'post',
+		data: {setStatusShipping: list},
+		success: function(response){
+			$('#lstatus').fadeOut(500,function(){
+				updateAllBadge();
+				$('#boardConsole').html(response);
+			});
 		}
+	});
+	}
 }
 
-function jobDone2(){ // setting all statuseUpdate to COMPLETE
-	var options = document.getElementsByClassName('options');
-	//var bpx = $('#allofem').prop('checked');
-		for(var i = 0; i < options.length; i++){
-			options[i].children[0].removeAttribute('selected');
-			options[i].children[1].removeAttribute('selected');
-			options[i].children[2].removeAttribute('selected');
-			options[i].children[3].removeAttribute('selected');
-			options[i].children[2].setAttribute('selected','selected');
+function toCompleted(){ // setting all statuseUpdate to COMPLETE
+	$('#lstatus').html('Loading, please wait...');
+	$('#lstatus').fadeIn(500);
+	if(confirm('Update status of current to completed (if non selected, most recent selected list is used, are you sure you\'d like to continue?') == true)
+	{
+	var list = localStorage.selected;
+	var list = list.split(',');
+	list.shift();
+	$.ajax({
+		url: 'orders.php',
+		type: 'post',
+		data: {setStatusCompleted: list},
+		success: function(response){
+			$('#lstatus').fadeOut(500,function(){
+				updateAllBadge();
+				$('#boardConsole').html(response);
+			});
 		}
-}
-
-function jobDone3(){ // setting all statuseUpdate to COMPLETE
-	var options = document.getElementsByClassName('options');
-	//var bpx = $('#allofem').prop('checked');
-		for(var i = 0; i < options.length; i++){
-			options[i].children[0].removeAttribute('selected');
-			options[i].children[1].removeAttribute('selected');
-			options[i].children[2].removeAttribute('selected');
-			options[i].children[3].removeAttribute('selected');
-			options[i].children[3].setAttribute('selected','selected');
-		}
+	});
+	}
 }
 
 function stockByAsc(id){
@@ -812,23 +810,6 @@ function ordersByDesc(id){
 	}
 	);
 }	
-
-
-function searchDatabaseColor(){
-	alert('ere');
-	$('#lstatus').html('Loading, please wait...');
-	$('#lstatus').fadeIn(500);
-	$.ajax({
-		url: 'orders.php',
-		type: 'post',
-		data: $('#searchDatabase').serialize(),
-		success: function(response){
-			$('#lstatus').fadeOut(500,function(){
-				$('#boardConsole').html(response);
-			});
-		}
-	});
-}
 
 function dome(e){
 	setTimeout(function(){
